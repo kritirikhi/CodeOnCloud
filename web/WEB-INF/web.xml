@@ -44,6 +44,10 @@
         <servlet-name>deleteFriendRequestFromProfileServlet</servlet-name>
         <servlet-class>deleteFriendRequestFromProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>unfriendServlet</servlet-name>
+        <servlet-class>unfriendServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>deleteFriendRequestFromProfileServlet</servlet-name>
         <url-pattern>/deleteFriendRequestFromProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>unfriendServlet</servlet-name>
+        <url-pattern>/unfriendServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

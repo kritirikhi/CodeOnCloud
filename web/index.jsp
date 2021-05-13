@@ -372,11 +372,12 @@
                             <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
                                 <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
-                                    Pages
+                                    View
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="job_list.html">Job List</a>
-                                    <a href="job_single.html">Job Single</a>
+                                    <a href="job_list.html">Friend Requests</a>
+                                    <a href="job_single.html">Sent Requests</a>
+                                    <a href="job_single.html">Friends</a>
                                 </div>
                             </li>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
