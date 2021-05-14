@@ -6,6 +6,7 @@
     else{
 %>
 
+
 <%@page import="utility.DBLoader"%>
 <%@ page import="java.sql.*" %>
 
@@ -97,6 +98,31 @@
               left: 200%;
             }
           }
+          .view-show:hover{
+              background: #e7e4e4!important;
+          }
+          
+          @media screen and (max-width: 768px){
+            #navbarSupportedContent{
+                margin:0 auto;
+            }
+            .view-menu{
+                background: transparent;
+                border:none;
+            }
+            .view-menu a{
+                color:white!important;
+            }
+            .view-menu a:hover{
+                color:#0d2865!important;
+            }
+            .session-user-menu{
+                left:50%;
+                transform:translateX(-50%);
+                z-index: 11;
+            }
+            
+        }
         </style>
   </head>
 
@@ -124,12 +150,14 @@
                                 </li>
                                 <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
                                     <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Pages
+                                    aria-expanded="false">
+                                        View 
+                                        <i class="fas fa-caret-down"></i>
                                     </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a href="job_list.html">Job List</a>
-                                        <a href="job_single.html">Job Single</a>
+                                    <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
+                                        <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
+                                        <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
+                                        <a class="view-show" href="./viewFriends.jsp">Friends</a>
                                     </div>
                                 </li>
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
@@ -140,10 +168,8 @@
                                     <button class="btn dropdown-toggle w3ls-btn text-uppercase font-weight-bold d-block" type="button" id="usernameMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="usernameMenuButton">
+                                    <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                       <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
-                                      <a class="dropdown-item" href="./viewFriendRequests.jsp">View Friend Requests</a>
-                                      <a class="dropdown-item" href="./viewSentRequests.jsp">View Sent Requests</a>
                                       <a class="dropdown-item" href="./userLogout">Logout</a>
                                     </div>
                                 </div>

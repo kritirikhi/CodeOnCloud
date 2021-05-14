@@ -6,6 +6,7 @@
     <title>Code Cloud</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <script>
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -271,7 +272,7 @@
             top:60%;
             left:50%;
             transform: translate(-50%,-50%);
-            z-index:10;
+            z-index:8;
             width:500px!important;
         }
         #searchresults{
@@ -284,7 +285,6 @@
             overflow-y:scroll;
             width:500px!important;
             background: white;
-            z-index:10;
             
         }
         .searchitem{
@@ -329,6 +329,10 @@
             font-family: Source Sans Pro, sans-serif;
             font-size: 0.5rem;
         }
+        .view-show:hover{
+            background:#e7e4e4!important;
+        }
+        
         
         @media screen and (max-width: 768px){
             #navbarSupportedContent{
@@ -341,6 +345,22 @@
                 width:250px!important;
                 max-height:100px;
             }
+            .view-menu{
+                background: transparent;
+                border:none;
+            }
+            .view-menu a{
+                color:white!important;
+            }
+            .view-menu a:hover{
+                color:#0d2865!important;
+            }
+            .session-user-menu{
+                left:50%;
+                transform:translateX(-50%);
+                z-index: 11;
+            }
+            
         }
         
     </style>
@@ -369,17 +389,25 @@
                             <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="about.html">about</a>
                             </li>
-                            <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
-                                <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    View
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="job_list.html">Friend Requests</a>
-                                    <a href="job_single.html">Sent Requests</a>
-                                    <a href="job_single.html">Friends</a>
-                                </div>
-                            </li>
+                            <%
+                                Object sessionuname = session.getAttribute("username");
+                                if (sessionuname!=null){
+                            %>
+                                    <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
+                                        <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            View 
+                                            <i class="fas fa-caret-down"></i>
+                                        </a>
+                                        <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
+                                            <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
+                                            <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
+                                            <a class="view-show" href="./viewFriends.jsp">Friends</a>
+                                        </div>
+                                    </li>
+                            <%
+                                }
+                            %>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
                                 <a href="contact.html">contact</a>
                             </li>
@@ -394,10 +422,9 @@
                                 <button class="btn dropdown-toggle w3ls-btn text-uppercase font-weight-bold d-block" type="button" id="usernameMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="usernameMenuButton">
+                                <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                   <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
-                                  <a class="dropdown-item" href="./viewFriendRequests.jsp">View Friend Requests</a>
-                                  <a class="dropdown-item" href="./viewSentRequests.jsp">View Sent Requests</a>
+                                  <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
                                   <a class="dropdown-item" href="./userLogout">Logout</a>
                                 </div>
                             </div>

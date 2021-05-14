@@ -6,6 +6,7 @@
     else{
 %>
 
+
 <%@page import="utility.DBLoader"%>
 <%@ page import="java.sql.*" %>
 
@@ -17,41 +18,39 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
-            function cancelFriendRequest(fid,btn){
-                console.log(fid);
+          
+            function compile_code_step1(){
+                var codetext = document.getElementById("codetext").value;
+                var language = document.getElementById("language").value;
+                console.log(codetext);
+                console.log(language);
+                
+                if(codetext===""){
+                    alert("enter code");
+                    return;
+                }
+                
+                if(language==="Java"){
+                    if(!(codetext.includes("class"))){
+                        alert("Enter Valid Java Code");
+                        return;
+                    }
+                }
+                
                 var formdata = new FormData();
-                formdata.append("fid",fid);
+                formdata.append("codetext",codetext);
+                formdata.append("language",language);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        var result = JSON.parse(this.responseText);
-                        if(result["type"]==="Success"){
-                            handleCancel(btn);
-                        }
-                        else{
-                            alert(result["message"]);
-                        }
+                        console.log(this.responseText);
                     }
                 };
-                xmlhttp.open("POST","./cancelFriendRequestServlet", true);
+                xmlhttp.open("POST","./compile_code_step1_servlet", true);
                 xmlhttp.send(formdata);
+                
             }
             
-            addEventListener("load", function () {
-                setTimeout(hideURLbar, 0);
-            }, false);
-
-            function hideURLbar() {
-                window.scrollTo(0, 1);
-            }
-
-            function handleCancel(btn) {
-              const card = btn.closest('.card');
-              card.classList.add('remove');
-              setTimeout(() => {
-                card.classList.add('d-none');
-              }, 1000);
-            }
       </script>
       
       <%@include file="headerfiles.html" %>
@@ -79,23 +78,6 @@
           .view-show:hover{
               background: #e7e4e4!important;
           }
-          @keyframes accept {
-            from {
-              right: 0;
-            }
-            to {
-              right: 200%;
-            }
-          }
-          @keyframes remove {
-            from {
-              left: 0;
-            }
-            to {
-              left: 200%;
-            }
-          }
-          
           
           @media screen and (max-width: 768px){
             #navbarSupportedContent{
@@ -175,54 +157,29 @@
         </div>
     <!-- //header -->
     
-    <h1 class="heading my-3">Sent Requests</h1>
+    <h1 class="heading my-3">Compile Code</h1>
     
     <section style="max-width: 800px; margin: 0 auto; margin-bottom: 20%">
-    <%  
-        try{
-            ResultSet rs = DBLoader.executeSQl("select * from friends where requestfrom='"+sessionusername.toString()+"' and status='pending'");
-            
-                while(rs.next()){
-                    String user = rs.getString("requestto");
-                    int fid = rs.getInt("fid");
-                    try{
-                        ResultSet rs2 = DBLoader.executeSQl("select * from users where username='"+user+"'");
-                        if(rs2.next()){
-                            String photo = rs2.getString("photo");
-                            String name = rs2.getString("name");
-                            String gender = rs2.getString("gender");
-    %>
+        
+        <form>
+            <div class="form-group">
+              <label for="language">Choose Language</label>
+              <select class="form-control" id="language">
+                <option>Java</option>
+                <option>Python</option>
+                <option>C</option>
+                <option>C++</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="codetext">Write Code Here</label>
+              <textarea class="form-control" id="codetext" rows="10"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
+            <button type="button" class="btn btn-primary">Run</button>
+        </form>
     
-                            <div class="card shadow my-4 mx-3">
-                                <div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">
-                                  <div class="col-12 col-md-3 my-1 text-center">
-                                      <img class="rounded-circle" style="width: 130px; height: 130px;" src="./myuploads/<%=photo%>" alt="Card image cap">
-                                  </div>
-                                  <div class="col-12 col-md-3">
-                                    <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Name: </span> <%=name%></p>
-                                    <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Gender: </span> <%=gender%></p>
-                                  </div>
-                                  <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
-                                    <button class="btn mx-3 btn-danger btn-lg" onclick="cancelFriendRequest(<%=fid%>,this)">Cancel Request</button>
-                                  </div>
-                                </div>
-                            </div>
-    <%
-                        }
-                    }
-                    catch(Exception e2){
-                        e2.printStackTrace();
-                    }
-                }
-            
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    
-    %>
     </section>
-
   <%@include file="footer.html" %>  
   </body>
   <%@include file="footerfiles.html" %>

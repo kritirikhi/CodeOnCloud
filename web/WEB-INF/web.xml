@@ -48,6 +48,10 @@
         <servlet-name>unfriendServlet</servlet-name>
         <servlet-class>unfriendServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>compile_code_step1_servlet</servlet-name>
+        <servlet-class>compile_code_step1_servlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>unfriendServlet</servlet-name>
         <url-pattern>/unfriendServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>compile_code_step1_servlet</servlet-name>
+        <url-pattern>/compile_code_step1_servlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

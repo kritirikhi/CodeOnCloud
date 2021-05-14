@@ -4,8 +4,8 @@
 <html>
 <head>
     <title>Code Cloud User Profile</title>
-    <%@include file="headerfiles.html" %>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
     <script>
         function addFriendLogic(){
             var profileusername = document.getElementById("profileusername").value;
@@ -56,14 +56,8 @@
             xmlhttp.send(formdata);
         }
     </script>
-</head>
-
-<%
-        Object sessionusername = session.getAttribute("username");           
-        if (sessionusername==null){
-%>
-
-<body>
+    
+    <%@include file="headerfiles.html" %>
     
     <style>
         .content{
@@ -90,7 +84,40 @@
         .card{
             position: relative;
          }
+         .view-show:hover{
+            background:#e7e4e4!important;
+        }
+        @media screen and (max-width: 768px){
+            #navbarSupportedContent{
+                margin:0 auto;
+            }
+            .view-menu{
+                background: transparent;
+                border:none;
+            }
+            .view-menu a{
+                color:white!important;
+            }
+            .view-menu a:hover{
+                color:#0d2865!important;
+            }
+            .session-user-menu{
+                left:50%;
+                transform:translateX(-50%);
+                z-index: 11;
+            }
+            
+        }
+        
     </style>
+</head>
+
+<%
+        Object sessionusername = session.getAttribute("username");           
+        if (sessionusername==null){
+%>
+
+<body>
             
     <div class="content container" style="margin-top:8%;margin-bottom:10%">
         <div style="text-align: center">
@@ -101,12 +128,10 @@
         </div>
     </div>
     
-</body>
 <%
         }
         else{
 %>
-    <body>
         <!-- header -->
         <header style="position:relative; margin-bottom:0px">
             <div class="container">
@@ -127,12 +152,14 @@
                             </li>
                             <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
                                 <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Pages
+                                aria-expanded="false">
+                                    View 
+                                    <i class="fas fa-caret-down"></i>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a href="job_list.html">Job List</a>
-                                    <a href="job_single.html">Job Single</a>
+                                <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
+                                    <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
+                                    <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
+                                    <a class="view-show" href="./viewFriends.jsp">Friends</a>
                                 </div>
                             </li>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
@@ -143,10 +170,8 @@
                                 <button class="btn dropdown-toggle w3ls-btn text-uppercase font-weight-bold d-block" type="button" id="usernameMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="usernameMenuButton">
+                                <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                   <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
-                                  <a class="dropdown-item" href="./viewFriendRequests.jsp">View Friend Requests</a>
-                                  <a class="dropdown-item" href="./viewSentRequests.jsp">View Sent Requests</a>
                                   <a class="dropdown-item" href="./userLogout">Logout</a>
                                 </div>
                             </div>
@@ -180,7 +205,11 @@
                               <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Primary Language: </span> <%=primarylanguage%></p>
                               <input type="hidden" id="profileusername" value="<%=profileusername%>" />
                             </div>
-                            <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
+                            
+                            <%
+                                if(!(profileusername.equals(sessionusername.toString()))){
+                            %>
+                                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
                                         <%
                                             if(friendset.next()){
                                                 String status = friendset.getString("status");
@@ -204,7 +233,10 @@
                                         <%
                                             }
                                         %>
-                            </div>
+                                    </div>
+                            <%
+                                }
+                            %>
                           </div>
                         </div>
                     </section>
