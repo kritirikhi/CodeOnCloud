@@ -21,9 +21,7 @@ public class compile_code_step1_servlet extends HttpServlet {
         
         String codetext = request.getParameter("codetext");
         String language = request.getParameter("language");
-        
-        System.out.println(codetext);
-        System.out.println(language);
+        language = language.toLowerCase();
         
         String foldername = "public";
         String filename = "";
@@ -39,7 +37,7 @@ public class compile_code_step1_servlet extends HttpServlet {
             f1.mkdir();
         }
         
-        if(language.equals("C") || language.equals("C++") || language.equals("Python")){
+        if(language.equals("c") || language.equals("cpp") || language.equals("python")){
             Date date = new Date();
             long milli = date.getTime();
             filename = milli+"";
@@ -48,7 +46,7 @@ public class compile_code_step1_servlet extends HttpServlet {
             filename = codetext.substring(codetext.indexOf("class")+6,codetext.indexOf("{")).trim();
         }
         
-        FileWriter fw = new FileWriter(f1+"\\"+filename+".java");
+        FileWriter fw = new FileWriter(f1+"\\"+filename+"."+language);
         for(int i=0;i<codetext.length();i++){
             fw.write(codetext.charAt(i));
         }
@@ -56,31 +54,8 @@ public class compile_code_step1_servlet extends HttpServlet {
         fw.flush();
         fw.close();
         
-        out.println("success");
+        request.getSession().setAttribute("filename",filename);
         
-//        int fid = Integer.parseInt(request.getParameter("fid"));
-//        try{
-//            ResultSet rs = DBLoader.executeSQl("select * from friends where fid='"+fid+"'");
-//            if(rs.next()){
-//                rs.deleteRow();
-//                String type="Success";
-//                String message="Request Canceled";
-//                String jsondata = "{"+"\"type\":"+"\""+type+"\""+","+"\"message\":"+"\""+message+"\""+"}";
-//                out.println(jsondata);
-//            }  
-//            else{
-//                String type="Error";
-//                String message="Already Canceled";
-//                String jsondata = "{"+"\"type\":"+"\""+type+"\""+","+"\"message\":"+"\""+message+"\""+"}";
-//                out.println(jsondata);
-//            }
-//        }
-//        catch(Exception e){
-//            String type="Error";
-//            String message="server error";
-//            String jsondata = "{"+"\"type\":"+"\""+type+"\""+","+"\"message\":"+"\""+message+"\""+"}";
-//            out.println(jsondata);
-//        }
+        out.println("success");
     }
-
 }

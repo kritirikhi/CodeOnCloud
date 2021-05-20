@@ -14,16 +14,58 @@
 <html lang="zxx">
 
   <head>
-      <title>Code On Cloud</title>
+      <title>Compile Code</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
           
+            function runCode(){
+                var language = document.getElementById("language").value;
+                var codetext = document.getElementById("codetext").value;
+                var commandargs = document.getElementById("commandargs").value;
+                
+                if(language==="Java"){
+                    language="java";
+                    var formdata = new FormData();
+                    formdata.append("language",language);
+                    formdata.append("codetext",codetext);
+                    formdata.append("commandargs",commandargs);
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("codeoutput").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("POST","./runJavaCodeServlet", true);
+                    xmlhttp.send(formdata);
+                }
+                if(language==="C" || language==="C++"){
+                    if(language==="C++"){
+                        language="cpp";
+                    }
+                    if(language==="C"){
+                        language="c";
+                    }
+                    var formdata = new FormData();
+                    formdata.append("language",language);
+                    formdata.append("codetext",codetext);
+                    formdata.append("commandargs",commandargs);
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            console.log(this.responseText);
+                            document.getElementById("codeoutput").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("POST","./runCppCodeServlet", true);
+                    xmlhttp.send(formdata);
+                }
+            }
+          
             function compile_code_step1(){
                 var codetext = document.getElementById("codetext").value;
                 var language = document.getElementById("language").value;
-                console.log(codetext);
-                console.log(language);
+                language = language.toLowerCase();
                 
                 if(codetext===""){
                     alert("enter code");
@@ -36,6 +78,9 @@
                         return;
                     }
                 }
+                if(language==="c++"){
+                    language="cpp";
+                }
                 
                 var formdata = new FormData();
                 formdata.append("codetext",codetext);
@@ -44,13 +89,48 @@
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         console.log(this.responseText);
+                        if(language==="java"){
+                            var formdata2 = new FormData();
+                            formdata2.append("language",language);
+                            var xmlhttp2 = new XMLHttpRequest();
+                            xmlhttp2.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    document.getElementById("codeoutput").innerHTML = this.responseText;
+                                }
+                            };
+                            xmlhttp2.open("POST","./compile_code_step2_servlet", true);
+                            xmlhttp2.send(formdata2);
+                        }
+                        else if(language==="c"){
+                            var formdata2 = new FormData();
+                            formdata2.append("language",language);
+                            var xmlhttp2 = new XMLHttpRequest();
+                            xmlhttp2.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    document.getElementById("codeoutput").innerHTML = this.responseText;
+                                }
+                            };
+                            xmlhttp2.open("POST","./c_compile_code_step2_servlet", true);
+                            xmlhttp2.send(formdata2);
+                        }
+                        else if(language==="cpp"){
+                            language="cpp";
+                            var formdata2 = new FormData();
+                            formdata2.append("language",language);
+                            var xmlhttp2 = new XMLHttpRequest();
+                            xmlhttp2.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    document.getElementById("codeoutput").innerHTML = this.responseText;
+                                }
+                            };
+                            xmlhttp2.open("POST","./cpp_compile_code_step2_servlet", true);
+                            xmlhttp2.send(formdata2);
+                        }
                     }
                 };
                 xmlhttp.open("POST","./compile_code_step1_servlet", true);
                 xmlhttp.send(formdata);
-                
             }
-            
       </script>
       
       <%@include file="headerfiles.html" %>
@@ -176,7 +256,15 @@
               <textarea class="form-control" id="codetext" rows="10"></textarea>
             </div>
             <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
-            <button type="button" class="btn btn-primary">Run</button>
+            <button type="button" class="btn btn-primary" onclick="runCode()">Run</button>
+            <div class="form-group mt-5">
+              <label for="commandargs">Enter space separated Command Line Arguments</label>
+              <textarea class="form-control" id="commandargs" rows="2"></textarea>
+            </div>
+            <div class="form-group mt-5">
+                <label for="codeoutput">Output</label>
+                <textarea id="codeoutput" class="form-control" rows="10"></textarea>
+            </div>
         </form>
     
     </section>

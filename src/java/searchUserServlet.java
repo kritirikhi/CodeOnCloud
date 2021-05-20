@@ -26,7 +26,6 @@ public class searchUserServlet extends HttpServlet {
             out.println(jsondata);
         }
         else{
-            System.out.println(sessionusername.toString());
             String keyword = request.getParameter("keyword");
             String loginUsername = request.getSession().getAttribute("username").toString();
             try{

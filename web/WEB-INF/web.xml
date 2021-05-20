@@ -52,6 +52,30 @@
         <servlet-name>compile_code_step1_servlet</servlet-name>
         <servlet-class>compile_code_step1_servlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>compile_code_step2_servlet</servlet-name>
+        <servlet-class>compile_code_step2_servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>runCodeServlet</servlet-name>
+        <servlet-class>runCodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>runJavaCodeServlet</servlet-name>
+        <servlet-class>runJavaCodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>c_compile_code_step2_servlet</servlet-name>
+        <servlet-class>c_compile_code_step2_servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>cpp_compile_code_step2_servlet</servlet-name>
+        <servlet-class>cpp_compile_code_step2_servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>runCppCodeServlet</servlet-name>
+        <servlet-class>runCppCodeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -103,6 +127,30 @@
     <servlet-mapping>
         <servlet-name>compile_code_step1_servlet</servlet-name>
         <url-pattern>/compile_code_step1_servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>compile_code_step2_servlet</servlet-name>
+        <url-pattern>/compile_code_step2_servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>runCodeServlet</servlet-name>
+        <url-pattern>/runCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>runJavaCodeServlet</servlet-name>
+        <url-pattern>/runJavaCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>c_compile_code_step2_servlet</servlet-name>
+        <url-pattern>/c_compile_code_step2_servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cpp_compile_code_step2_servlet</servlet-name>
+        <url-pattern>/cpp_compile_code_step2_servlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>runCppCodeServlet</servlet-name>
+        <url-pattern>/runCppCodeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
