@@ -6,7 +6,6 @@
     else{
 %>
 
-
 <%@page import="utility.DBLoader"%>
 <%@ page import="java.sql.*" %>
 
@@ -18,7 +17,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
-          
             function runCode(){
                 var language = document.getElementById("language").value;
                 var codetext = document.getElementById("codetext").value;
@@ -39,7 +37,7 @@
                     xmlhttp.open("POST","./runJavaCodeServlet", true);
                     xmlhttp.send(formdata);
                 }
-                if(language==="C" || language==="C++"){
+                else if(language==="C" || language==="C++"){
                     if(language==="C++"){
                         language="cpp";
                     }
@@ -60,6 +58,21 @@
                     xmlhttp.open("POST","./runCppCodeServlet", true);
                     xmlhttp.send(formdata);
                 }
+                else if(language==="Python"){
+                    language="python";
+                    var formdata = new FormData();
+                    formdata.append("language",language);
+                    formdata.append("codetext",codetext);
+                    formdata.append("commandargs",commandargs);
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("codeoutput").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("POST","./runPythonCodeServlet", true);
+                    xmlhttp.send(formdata);
+                }
             }
           
             function compile_code_step1(){
@@ -72,7 +85,7 @@
                     return;
                 }
                 
-                if(language==="Java"){
+                if(language==="java"){
                     if(!(codetext.includes("class"))){
                         alert("Enter Valid Java Code");
                         return;
@@ -96,6 +109,16 @@
                             xmlhttp2.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status == 200) {
                                     document.getElementById("codeoutput").innerHTML = this.responseText;
+                                    var s1=this.responseText
+                                    var s2="File Saved And Compiled Successfully";
+                                    s1=s1.trim();
+                                    s2=s2.trim();
+                                    if(s1==s2){
+                                        document.getElementById("runBtn").disabled=false;
+                                    }
+                                    else{
+                                        document.getElementById("runBtn").disabled=true;
+                                    }
                                 }
                             };
                             xmlhttp2.open("POST","./compile_code_step2_servlet", true);
@@ -108,6 +131,16 @@
                             xmlhttp2.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status == 200) {
                                     document.getElementById("codeoutput").innerHTML = this.responseText;
+                                    var s1=this.responseText
+                                    var s2="File Saved And Compiled Successfully";
+                                    s1=s1.trim();
+                                    s2=s2.trim();
+                                    if(s1==s2){
+                                        document.getElementById("runBtn").disabled=false;
+                                    }
+                                    else{
+                                        document.getElementById("runBtn").disabled=true;
+                                    }
                                 }
                             };
                             xmlhttp2.open("POST","./c_compile_code_step2_servlet", true);
@@ -121,10 +154,36 @@
                             xmlhttp2.onreadystatechange = function() {
                                 if (this.readyState == 4 && this.status == 200) {
                                     document.getElementById("codeoutput").innerHTML = this.responseText;
+                                    var s1=this.responseText
+                                    var s2="File Saved And Compiled Successfully";
+                                    s1=s1.trim();
+                                    s2=s2.trim();
+                                    if(s1==s2){
+                                        document.getElementById("runBtn").disabled=false;
+                                    }
+                                    else{
+                                        document.getElementById("runBtn").disabled=true;
+                                    }
                                 }
                             };
                             xmlhttp2.open("POST","./cpp_compile_code_step2_servlet", true);
                             xmlhttp2.send(formdata2);
+                        }
+                        else if(language==="python"){
+                            console.log(this.responseText);
+                            document.getElementById("codeoutput").innerHTML = "File Saved Successfully";
+                            var s1=this.responseText
+                            var s2="success";
+                            s1=s1.trim();
+                            s2=s2.trim();
+                            console.log(s1);
+                            console.log(s2);
+                            if(s1==s2){
+                                document.getElementById("runBtn").disabled=false;
+                            }
+                            else{
+                                document.getElementById("runBtn").disabled=true;
+                            }
                         }
                     }
                 };
@@ -256,7 +315,7 @@
               <textarea class="form-control" id="codetext" rows="10"></textarea>
             </div>
             <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
-            <button type="button" class="btn btn-primary" onclick="runCode()">Run</button>
+            <button type="button" class="btn btn-primary" onclick="runCode()" id="runBtn" disabled>Run</button>
             <div class="form-group mt-5">
               <label for="commandargs">Enter space separated Command Line Arguments</label>
               <textarea class="form-control" id="commandargs" rows="2"></textarea>

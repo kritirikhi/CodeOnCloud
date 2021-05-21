@@ -76,6 +76,10 @@
         <servlet-name>runCppCodeServlet</servlet-name>
         <servlet-class>runCppCodeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>runPythonCodeServlet</servlet-name>
+        <servlet-class>runPythonCodeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>runCppCodeServlet</servlet-name>
         <url-pattern>/runCppCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>runPythonCodeServlet</servlet-name>
+        <url-pattern>/runPythonCodeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

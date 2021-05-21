@@ -46,6 +46,9 @@ public class compile_code_step1_servlet extends HttpServlet {
             filename = codetext.substring(codetext.indexOf("class")+6,codetext.indexOf("{")).trim();
         }
         
+        if(language.equals("python")){
+            language="py";
+        }
         FileWriter fw = new FileWriter(f1+"\\"+filename+"."+language);
         for(int i=0;i<codetext.length();i++){
             fw.write(codetext.charAt(i));
