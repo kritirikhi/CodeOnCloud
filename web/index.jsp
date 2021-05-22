@@ -402,7 +402,9 @@
                                         <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
                                             <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                             <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
-                                            <a class="view-show" href="./viewFriends.jsp">Friends</a>
+                                            <a class="view-show" href="./viewFriends.jsp">Friends</a>                                            
+                                            <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
+
                                         </div>
                                     </li>
                             <%
@@ -449,6 +451,7 @@
             </div>
         </header>
         <!-- //header -->
+        
         <div class="slider" style="position:relative!important">
             <%  
                 
@@ -517,7 +520,7 @@
         </div>
     </div>
     <!-- //Slider -->    
-    <!--partners  -->
+    <!--languages  -->
     <div class="w3ltdits-partners bg-theme" id="partners">
         <div class="container pt-4">
             <div class="title-wthree text-center">
@@ -550,7 +553,7 @@
             </ul>
         </div>
     </div>
-    <!-- //partners -->
+    <!-- //languages -->
     <!-- about -->
     <section class="about-wthree py-3">
         <div class="container  py-sm-5">
@@ -583,157 +586,9 @@
         </div>
     </section>
     <!-- //about -->
-    <!-- services -->
-    <section class="bg-theme position-relative" id="services">
-        <div class="container">
-            <div class="title-sec-w3layouts_pvt text-center">
-                <span class="title-wthree text-white">a world full of possibilities</span>
-                <h4 class="w3layouts_pvt-head">allowing you to expand quickly.</h4>
-            </div>
-            <div class="row head-row-home">
-                <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-md-6 service-title my-sm-5 my-4">
-                            <h4 class="home-title text-white">Job by Category</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title my-md-5">
-                            <h4 class="home-title text-white">Job by Company</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title mt-md-0 mt-sm-5 mt-4">
-                            <h4 class="home-title text-white">Job by Skill</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title mt-md-0 mt-sm-5 mt-4">
-                            <h4 class="home-title text-white">Job by Opening</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <a href="job_list.html" class="btn wthree-bnr-btn">Read more</a>
-                    </div>
-                </div>
-                <div class="offset-lg-4"></div>
-            </div>
-        </div>
-        <img src="images/services.jpg" alt="" class="img-fluid">
-    </section>
-    <!-- //services -->
-    <!-- job roles -->
-    <div class="wthreepvt-pos py-md-5 py-5" id="positions">
-        <div class="container py-lg-5">
-            <div class="wthreepvt-pos-row row  text-center">
-                <div class="col-lg-4 col-sm-6 wthreepvt-pos-grids">
-                    <div class="p-md-5 p-sm-3">
-                        <span class="fa fa-check-square" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">Computer & IT</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 wthreepvt-pos-grids  border-left border-right my-sm-0 my-5">
-                    <div class="p-md-5 p-sm-3">
-                        <span class="fa fa-suitcase" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">Marketing</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 wthreepvt-pos-grids">
-                    <div class="p-md-5 p-sm-3">
-                        <span class="fa fa-thumbs-up" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">Insurance</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-            </div>
-            <div class="wthreepvt-pos-row border-top row text-center pb-lg-5 pt-md-0 pt-5 mt-md-0 mt-sm-5 mt-4">
-                <div class="col-lg-4 col-sm-6 wthreepvt-pos-grids">
-                    <div class="p-md-5 p-sm-3 col-label">
-                        <span class="fa fa-thumb-tack" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">Customer Service</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 wthreepvt-pos-grids mt-lg-0 mt-md-3 border-left border-right pt-sm-0 pt-5">
-                    <div class="p-md-5 p-sm-3 col-label">
-                        <span class="fa fa-external-link" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">health care</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 wthreepvt-pos-grids pt-md-0 pt-5">
-                    <div class="p-md-5 p-sm-3 col-label">
-                        <span class="fa fa-cog" aria-hidden="true"></span>
-                        <h4 class="mt-2 mb-3">automotive</h4>
-                        <p>Itaque earum rerum hic tenetur a sapiente delectus reiciendis maiores alias consequatur aut</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //job roles -->
-    <!-- services bottom -->
-    <section class="bg-theme position-relative" id="services-bot">
-        <div class="container-fluid px-0">
-            <div class="title-sec-w3layouts_pvt text-center">
-                <span class="title-wthree text-white">a world full of possibilities</span>
-                <h4 class="w3layouts_pvt-head">allowing you to expand quickly.</h4>
-            </div>
-            <img src="images/services.jpg" alt="" class="img-fluid">
-            <div class="row head-row-home mx-0">
-                <div class="offset-5"></div>
-                <div class="col-lg-5">
-                    <div class="row">
-                        <div class="col-md-6 service-title my-sm-5 my-4">
-                            <h4 class="home-title text-white">Job by Category</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title my-md-5">
-                            <h4 class="home-title text-white">Job by Company</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title mt-md-0 mt-sm-5 mt-4">
-                            <h4 class="home-title text-white">Job by Skill</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                        <div class="col-md-6 service-title mt-md-0 mt-sm-5 mt-4">
-                            <h4 class="home-title text-white">Job by Opening</h4>
-                            <p class="sec-4">Itaque earum rerum hic tenetur a sapiente delectusum hic
-                                tenetur a
-                                sapiente delectus reiciendis maiores alias consequatur.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <a href="job_list.html" class="btn wthree-bnr-btn">Read more</a>
-                    </div>
-                </div>
-                <div class="offset-2"></div>
-            </div>
-        </div>
-    </section>
-    <!-- //services bottom-->
+   
+    
+    
     <!-- blog -->
     <section class="blog_w3ls py-lg-5">
         <div class="container py-5">

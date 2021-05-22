@@ -80,6 +80,14 @@
         <servlet-name>runPythonCodeServlet</servlet-name>
         <servlet-class>runPythonCodeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>saveCodeServlet</servlet-name>
+        <servlet-class>saveCodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getAllFriendsListServlet</servlet-name>
+        <servlet-class>getAllFriendsListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -159,6 +167,14 @@
     <servlet-mapping>
         <servlet-name>runPythonCodeServlet</servlet-name>
         <url-pattern>/runPythonCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>saveCodeServlet</servlet-name>
+        <url-pattern>/saveCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getAllFriendsListServlet</servlet-name>
+        <url-pattern>/getAllFriendsListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

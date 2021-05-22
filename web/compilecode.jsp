@@ -17,6 +17,48 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
+            function saveCode(){
+                var codeTitle = document.getElementById("saveCodeTitle").value;                
+                var language = document.getElementById("language").value;
+                language=language.toLowerCase();
+                
+                if(language==="c++"){
+                    language="cpp";
+                }
+                
+                var formdata = new FormData();
+                formdata.append("language",language);
+                formdata.append("codeTitle",codeTitle);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        if(response["type"]==="Success"){
+                            document.getElementById("saveCodeMessage").style.display="block";
+                            document.getElementById("saveCodeMessage").style.background="#99ff99";
+                            document.getElementById("saveCodeMessageDisplay").innerHTML=response["message"];
+                            
+                            setTimeout(function(){
+                                document.getElementById("saveCodeMessage").style.display="none";
+                                $("#saveCodeModal").modal("hide");
+                            }, 2000); 
+                        }
+                        else if(response["type"]==="Error"){
+                            document.getElementById("saveCodeMessage").style.display="block";
+                            document.getElementById("saveCodeMessage").style.background="#ff3333";
+                            document.getElementById("saveCodeMessageDisplay").innerHTML=response["message"];
+                            
+                            setTimeout(function(){
+                                document.getElementById("saveCodeMessage").style.display="none";
+                                $("#saveCodeModal").modal("hide");
+                            }, 2000); 
+                        }
+                    }
+                };
+                xmlhttp.open("POST","./saveCodeServlet", true);
+                xmlhttp.send(formdata);
+                
+            }
             function runCode(){
                 var language = document.getElementById("language").value;
                 var codetext = document.getElementById("codetext").value;
@@ -51,7 +93,6 @@
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
-                            console.log(this.responseText);
                             document.getElementById("codeoutput").innerHTML = this.responseText;
                         }
                     };
@@ -101,7 +142,6 @@
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.log(this.responseText);
                         if(language==="java"){
                             var formdata2 = new FormData();
                             formdata2.append("language",language);
@@ -115,9 +155,12 @@
                                     s2=s2.trim();
                                     if(s1==s2){
                                         document.getElementById("runBtn").disabled=false;
+                                        document.getElementById("saveBtn").style.display="inline-block";
+                                        document.getElementById("saveBtn").disabled=false;
                                     }
                                     else{
                                         document.getElementById("runBtn").disabled=true;
+                                        document.getElementById("saveBtn").disabled=true;
                                     }
                                 }
                             };
@@ -137,9 +180,12 @@
                                     s2=s2.trim();
                                     if(s1==s2){
                                         document.getElementById("runBtn").disabled=false;
+                                        document.getElementById("saveBtn").style.display="inline-block";
+                                        document.getElementById("saveBtn").disabled=false;
                                     }
                                     else{
                                         document.getElementById("runBtn").disabled=true;
+                                        document.getElementById("saveBtn").disabled=true;
                                     }
                                 }
                             };
@@ -160,9 +206,12 @@
                                     s2=s2.trim();
                                     if(s1==s2){
                                         document.getElementById("runBtn").disabled=false;
+                                        document.getElementById("saveBtn").style.display="inline-block";
+                                        document.getElementById("saveBtn").disabled=false;
                                     }
                                     else{
                                         document.getElementById("runBtn").disabled=true;
+                                        document.getElementById("saveBtn").disabled=true;
                                     }
                                 }
                             };
@@ -170,19 +219,19 @@
                             xmlhttp2.send(formdata2);
                         }
                         else if(language==="python"){
-                            console.log(this.responseText);
                             document.getElementById("codeoutput").innerHTML = "File Saved Successfully";
                             var s1=this.responseText
                             var s2="success";
                             s1=s1.trim();
                             s2=s2.trim();
-                            console.log(s1);
-                            console.log(s2);
                             if(s1==s2){
                                 document.getElementById("runBtn").disabled=false;
+                                document.getElementById("saveBtn").style.display="inline-block";
+                                document.getElementById("saveBtn").disabled=false;
                             }
                             else{
                                 document.getElementById("runBtn").disabled=true;
+                                document.getElementById("saveBtn").disabled=true;
                             }
                         }
                     }
@@ -190,6 +239,7 @@
                 xmlhttp.open("POST","./compile_code_step1_servlet", true);
                 xmlhttp.send(formdata);
             }
+            
       </script>
       
       <%@include file="headerfiles.html" %>
@@ -216,6 +266,9 @@
           }
           .view-show:hover{
               background: #e7e4e4!important;
+          }
+          .textarea-for-code{
+              resize:none;
           }
           
           @media screen and (max-width: 768px){
@@ -296,40 +349,93 @@
         </div>
     <!-- //header -->
     
-    <h1 class="heading my-3">Compile Code</h1>
     
-    <section style="max-width: 800px; margin: 0 auto; margin-bottom: 20%">
-        
+    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%">
         <form>
-            <div class="form-group">
-              <label for="language">Choose Language</label>
-              <select class="form-control" id="language">
-                <option>Java</option>
-                <option>Python</option>
-                <option>C</option>
-                <option>C++</option>
-              </select>
+            <div style="display:flex; justify-content: space-between; align-items: center">
+                <div class="form-group" style="display: inline-block">
+                  <label for="language" class="font-weight-bold">Choose Language</label>
+                  <select class="form-control" id="language">
+                    <option>Java</option>
+                    <option>Python</option>
+                    <option>C</option>
+                    <option>C++</option>
+                  </select>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
+                    <button type="button" class="btn btn-primary ml-3" onclick="runCode()" id="runBtn" disabled>Run</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" id="saveBtn" style="display:none; background-color:#0d2865; border: 1px solid #0d2865" class="btn btn-success ml-3" data-toggle="modal" data-target="#saveCodeModal">
+                      Save
+                    </button>
+                </div>
             </div>
             <div class="form-group">
-              <label for="codetext">Write Code Here</label>
-              <textarea class="form-control" id="codetext" rows="10"></textarea>
+              <label for="codetext" class="font-weight-bold">Write Code Here</label>
+              <textarea class="form-control textarea-for-code" id="codetext" rows="12" spellcheck="false"></textarea>
             </div>
-            <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
-            <button type="button" class="btn btn-primary" onclick="runCode()" id="runBtn" disabled>Run</button>
-            <div class="form-group mt-5">
-              <label for="commandargs">Enter space separated Command Line Arguments</label>
-              <textarea class="form-control" id="commandargs" rows="2"></textarea>
+            
+
+            <!-- Modal for input title for save code-->
+            <div class="modal fade" id="saveCodeModal" tabindex="-1" role="dialog" aria-labelledby="saveCodeModal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="saveCodeLabel">Save Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container" id="saveCodeMessage" style="text-align:center;padding-top:5px; padding-bottom:5px; display:none"><b id="saveCodeMessageDisplay"></b></div>
+                      <label for="saveCodeTitle" id="saveCodeTitleLabel">Enter Title For The Code</label>
+                      <input type="text" id="saveCodeTitle" class="form-control"/>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCode()">Save changes</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-group mt-5">
-                <label for="codeoutput">Output</label>
-                <textarea id="codeoutput" class="form-control" rows="10"></textarea>
+            <!-- modal close -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="commandargs" class="font-weight-bold">Enter space separated Command Line Arguments</label>
+                        <textarea class="form-control textarea-for-code" id="commandargs" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="codeoutput" class="font-weight-bold">Output</label>
+                        <textarea id="codeoutput" class="form-control textarea-for-code" rows="4" readonly></textarea>
+                    </div>
+                </div>
             </div>
         </form>
     
     </section>
+    
   <%@include file="footer.html" %>  
   </body>
   <%@include file="footerfiles.html" %>
+  <script>
+        $('#saveCodeModal').on('hide.bs.modal',function(e){
+            document.getElementById("saveCodeTitle").value="";
+            document.getElementById("saveCodeMessage").style.display="none";
+        })
+        
+        Array.from(document.getElementsByClassName("textarea-for-code")).forEach(el=>el.addEventListener("keydown",function(e){
+            if(e.which==9){
+                e.preventDefault();
+                e.target.value+="    ";
+            }
+        }))
+ 
+  </script>
+  
 </html>
 
 
