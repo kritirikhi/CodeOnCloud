@@ -138,7 +138,7 @@
                                     <a href="./index.jsp">Home</a>
                                 </li>
                                 <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
-                                    <a href="about.html">about</a>
+                                    <a href="./about.jsp">about</a>
                                 </li>
                                 
                                     <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
@@ -150,12 +150,13 @@
                                         <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
                                             <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                             <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
-                                            <a class="view-show" href="./viewFriends.jsp">Friends</a>
+                                            <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
+                                            <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
                                         </div>
                                     </li>
                             
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
-                                    <a href="contact.html">contact</a>
+                                    <a href="./contact.jsp">contact</a>
                                 </li>
                             </ul>
                                 <div class="dropdown">

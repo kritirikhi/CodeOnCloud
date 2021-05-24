@@ -12,7 +12,7 @@ import utility.RDBMS_TO_JSON;
 import utility.encryptDecrypt;
 
 @MultipartConfig
-public class getAllFriendsListServlet extends HttpServlet {
+public class likeCodeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -22,14 +22,26 @@ public class getAllFriendsListServlet extends HttpServlet {
         Object sessionusername = request.getSession().getAttribute("username");
         if(sessionusername==null){
             String type="Error";
-            String message="Login To Share The Code";
+            String message="Login To Like The Code";
             String jsondata = "{"+"\"type\":"+"\""+type+"\""+","+"\"message\":"+"\""+message+"\""+"}";
             out.println(jsondata);
         }
         else{
             try{
-                String scid=request.getParameter("scid");
-                String jsondata = new RDBMS_TO_JSON().generateJSON("select * from friends where requestfrom='"+sessionusername.toString()+"' and status='friends' and requestto not in (select sharedwith from sharedcodes where ownedby=\""+sessionusername.toString()+"\" and scid='"+scid+"') ");
+                int shid = Integer.parseInt(request.getParameter("shid"));
+                ResultSet rs = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and shid='"+shid+"'");
+                if(rs.next()){
+                    rs.deleteRow();
+                }
+                else{
+                    rs.moveToInsertRow();
+                    rs.updateString("likedby",sessionusername.toString());
+                    rs.updateInt("shid", shid);
+                    rs.insertRow();
+                }
+                String type="Success";
+                String message="Liked Successfully";
+                String jsondata = "{"+"\"type\":"+"\""+type+"\""+","+"\"message\":"+"\""+message+"\""+"}";
                 out.println(jsondata);
             }
             catch(Exception e){

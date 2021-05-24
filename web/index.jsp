@@ -387,7 +387,7 @@
                                 <a href="./index.jsp">Home</a>
                             </li>
                             <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
-                                <a href="about.html">about</a>
+                                <a href="./about.jsp">about</a>
                             </li>
                             <%
                                 Object sessionuname = session.getAttribute("username");
@@ -411,7 +411,7 @@
                                 }
                             %>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
-                                <a href="contact.html">contact</a>
+                                <a href="./contact.jsp">contact</a>
                             </li>
                         </ul>
                         <%
@@ -566,21 +566,29 @@
                     <span class="head-line"></span>
                     <span class="fa fa-info-circle" aria-hidden="true"></span>
                     <h4 class="home-title my-3">why choose us</h4>
-                    <p> Pellentesque in ipsum id orci porta dapibus roined magna orem ipsum dolor sit amet,consetetur.</p>
-                    <a href="about.html" class="btn wthree-bnr-btn">Read more</a>
+                    <p>If you are a person who wants to code and share the code with multiple users at one 
+                        time then you are at right place...
+                    </p>
+                    <a href="./about.jsp" class="btn wthree-bnr-btn">Read more</a>
                 </div>
                 <div class="col-md-4 my-4 home-grid">
                     <span class="head-line"></span>
                     <span class="fa fa-connectdevelop" aria-hidden="true"></span>
                     <h4 class="home-title my-3">what we do</h4>
-                    <p> Pellentesque in ipsum id orci porta dapibus roined magna orem ipsum dolor sit amet,consetetur.</p>
-                    <a href="about.html" class="btn wthree-bnr-btn">Read more</a>
+                    <p>
+                        We provide you the best coding experience which you want while coding. 
+                        The code editor is quite simple and easy to use...
+                    </p>
+                    <a href="./about.jsp" class="btn wthree-bnr-btn">Read more</a>
                 </div>
                 <div class="col-md-4 my-4 home-grid">
                     <span class="fa fa-users" aria-hidden="true"></span>
                     <h4 class="home-title my-3">explore yourself</h4>
-                    <p> Pellentesque in ipsum id orci porta dapibus roined magna orem ipsum dolor sit amet,consetetur.</p>
-                    <a href="about.html" class="btn wthree-bnr-btn">Read more</a>
+                    <p>
+                        Now You will be able to explore various coding languages. You can get ratings for your 
+                        code from other users...    
+                    </p>
+                    <a href="./about.jsp" class="btn wthree-bnr-btn">Read more</a>
                 </div>
             </div>
         </div>
@@ -588,285 +596,8 @@
     <!-- //about -->
    
     
+    <%@include file='footer.html' %>
     
-    <!-- blog -->
-    <section class="blog_w3ls py-lg-5">
-        <div class="container py-5">
-            <div class="title-sec-w3layouts_pvt text-center">
-                <span class="title-wthree">a world full of possibilities</span>
-                <h4 class="w3layouts_pvt-head">allowing you to expand quickly.</h4>
-            </div>
-            <div class="row head-row-home">
-                <!-- blog grid -->
-                <div class="col-lg-4 col-md-6 mt-sm-0 mt-4">
-                    <div class="card border-0">
-                        <div class="card-header p-0">
-                            <a href="#exampleModal2" data-toggle="modal" aria-pressed="false" data-target="#exampleModal2"
-                                role="button">
-                                <img class="card-img-bottom" src="images/b1.jpg" alt="Card image cap">
-                            </a>
-                        </div>
-                        <div class="card-body border-0 px-0">
-                            <div class="blog_w3icon d-flex justify-content-between">
-                                <span>
-                                    By: Admin</span>
-                                <span>
-                                    20/6/2018</span>
-                            </div>
-                            <div class="pt-4">
-                                <h5 class="blog-title card-title font-weight-bold">
-                                    <a href="#exampleModal2" data-toggle="modal" aria-pressed="false" data-target="#exampleModal2"
-                                        role="button">Cras ultricies ligula sed magna dictum porta auris blandita.</a>
-                                </h5>
-                                <p>At vero eos et accusam et justo duo dolores et ea rebum. Lorem ipsum dolor sit
-                                    ametLorem ipsum dolor sit amet,sed diam nonumy.</p>
-                            </div>
-                            <button type="button" class="btn blog-btn wthree-bnr-btn" data-toggle="modal" aria-pressed="false"
-                                data-target="#exampleModal2">
-                                Read more
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- //blog grid -->
-                <!-- blog grid -->
-                <div class="col-lg-4 col-md-6 mt-md-0 mt-sm-5 mt-4">
-                    <div class="card border-0">
-                        <div class="card-header p-0">
-                            <a href="#exampleModal3" data-toggle="modal" aria-pressed="false" data-target="#exampleModal3"
-                                role="button">
-                                <img class="card-img-bottom" src="images/b2.jpg" alt="Card image cap">
-                            </a>
-                        </div>
-                        <div class="card-body border-0">
-                            <div class="blog_w3icon d-flex justify-content-between">
-                                <span>
-                                    By: Admin</span>
-                                <span>
-                                    20/6/2018</span>
-                            </div>
-                            <div class="pt-4">
-                                <h5 class="blog-title card-title font-weight-bold">
-                                    <a href="#exampleModal3" data-toggle="modal" aria-pressed="false" data-target="#exampleModal3"
-                                        role="button">Cras ultricies ligula sed magna dictum porta auris blandita.</a>
-                                </h5>
-                                <p>At vero eos et accusam et justo duo dolores et ea rebum. Lorem ipsum dolor sit
-                                    ametLorem ipsum dolor sit amet,sed diam nonumy.</p>
-                            </div>
-                            <button type="button" class="btn blog-btn wthree-bnr-btn" data-toggle="modal" aria-pressed="false"
-                                data-target="#exampleModal3">
-                                Read more
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- //blog grid -->
-                <!-- blog grid -->
-                <div class="col-lg-4 col-md-6 mt-lg-0 mt-5 mx-auto">
-                    <div class="card border-0">
-                        <div class="card-header p-0">
-                            <a href="#exampleModal4" data-toggle="modal" aria-pressed="false" data-target="#exampleModal4"
-                                role="button">
-                                <img class="card-img-bottom" src="images/b3.jpg" alt="Card image cap">
-                            </a>
-                        </div>
-                        <div class="card-body border-0">
-                            <div class="blog_w3icon d-flex justify-content-between">
-                                <span>
-                                    By: Admin</span>
-                                <span>
-                                    20/6/2018</span>
-                            </div>
-                            <div class="pt-4">
-                                <h5 class="blog-title card-title font-weight-bold">
-                                    <a href="#exampleModal4" data-toggle="modal" aria-pressed="false" data-target="#exampleModal4"
-                                        role="button">Cras ultricies ligula sed magna dictum porta auris blandita.</a>
-                                </h5>
-                                <p>At vero eos et accusam et justo duo dolores et ea rebum. Lorem ipsum dolor sit
-                                    ametLorem ipsum dolor sit amet,sed diam nonumy.</p>
-                            </div>
-                            <button type="button" class="btn blog-btn wthree-bnr-btn" data-toggle="modal" aria-pressed="false"
-                                data-target="#exampleModal4">
-                                Read more
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- //blog grid -->
-            </div>
-        </div>
-    </section>
-    <!-- //blog -->
-    <!-- Footer -->
-    <footer id="footer" class="py-sm-5 py-4 bg-theme">
-        <div class="container">
-            <div class="footer-top-w3ls">
-                <h2><a href="index.html" class="navbar-brand">Code On Cloud</a></h2>
-                <p class="text-white">
-                    This is the platform where you can code in any language of your choice. You can
-                    also save your codes and share with your friends on the platform. One can make any user his/her
-                    friend by sending and aceepting the friend request. 
-                </p>
-            </div>
-            <div class="row  pt-5">
-                <div class="col-lg-3 col-sm-6 footer_grid1">
-                    <h5>Address</h5>
-                    <div class="d-flex align-items-center">
-                        <span class="fa fa-building mr-4"></span>
-                        <p>90 Street, landmark
-                            <br>City State 34189.</p>
-                    </div>
-                    <div class="d-flex mt-3 align-items-center">
-                        <span class="fa fa-building mr-4"></span>
-                        <p>16 Street, landmark
-                            <br>City State 74789.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 mt-sm-0 mt-5">
-                    <h5>Quick links</h5>
-                    <ul class="list-unstyled quick-links">
-                        <li>
-                            <a href="./index.jsp">
-                                <span class="fa fa-play"></span>Home</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa fa-play"></span>About</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa fa-play"></span>Job List</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa fa-play"></span>Job Single</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <span class="fa fa-play"></span>Contact</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5">
-                    <h5>Quick links</h5>
-                    <ul class="list-unstyled quick-links">
-                        <li>
-                            <a href="index.html">
-                                <span class="fa fa-play"></span>Home</a>
-                        </li>
-                        <li>
-                            <a href="about.html">
-                                <span class="fa fa-play"></span>About</a>
-                        </li>
-                        <li>
-                            <a href="job_list.html">
-                                <span class="fa fa-play"></span>Job List</a>
-                        </li>
-                        <li>
-                            <a href="job_single.html">
-                                <span class="fa fa-play"></span>Job Single</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">
-                                <span class="fa fa-play"></span>Contact</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5">
-                    <h5>Subscribe To Get Notifications</h5>
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <input type="email" class="form-control  border-0 border-rounded" id="emailid" placeholder="Enter email"
-                                name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="Submit" class="form-control bg-light-theme  border-0 border-rounded" id="sub"
-                                value="Submit" name="sub">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- /Footer -->
-    <div class="cpy-right text-center py-4">
-        <p class="text-dark">© 2018 Recruit. All rights reserved | Design by
-            <a href="http://w3layouts.com" class="text-theme"> W3layouts.</a>
-        </p>
-    </div>
-    <!-- blog modal1 -->
-    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-theme1">
-                    <h5 class="modal-title" id="exampleModalLabel2">Cras ultricies ligula sed magna dictum porta auris
-                        blandita.</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <img src="images/b1.jpg" class="img-fluid" alt="" />
-                    <p class="text-left my-4">
-                        Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl
-                        tempus convallis quis ac
-                        lectus. Cras ultricies ligula sed magna dictum porta.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //blog modal1 -->
-    <!-- blog modal2 -->
-    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-theme1">
-                    <h5 class="modal-title" id="exampleModalLabel3">Cras ultricies ligula sed magna dictum porta auris
-                        blandita.</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <img src="images/b2.jpg" class="img-fluid" alt="" />
-                    <p class="text-left my-4">
-                        Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl
-                        tempus convallis quis ac
-                        lectus. Cras ultricies ligula sed magna dictum porta.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //blog modal2 -->
-    <!-- blog modal3 -->
-    <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-theme1">
-                    <h5 class="modal-title" id="exampleModalLabel4">Cras ultricies ligula sed magna dictum porta auris
-                        blandita.</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <img src="images/b3.jpg" class="img-fluid" alt="" />
-                    <p class="text-left my-4">
-                        Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl
-                        tempus convallis quis ac
-                        lectus. Cras ultricies ligula sed magna dictum porta.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //blog modal3-->
     <!-- login modal -->
     <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleuserLoginModal"
         aria-hidden="true">
@@ -917,8 +648,8 @@
         </div>
     </div>
     <!-- //login modal -->
-    <!-- register modal -->
     
+    <!-- register modal -->
     <div class="modal fade" id="userSignupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

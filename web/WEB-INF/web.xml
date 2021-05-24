@@ -88,6 +88,14 @@
         <servlet-name>getAllFriendsListServlet</servlet-name>
         <servlet-class>getAllFriendsListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>shareCodeServlet</servlet-name>
+        <servlet-class>shareCodeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>likeCodeServlet</servlet-name>
+        <servlet-class>likeCodeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -175,6 +183,14 @@
     <servlet-mapping>
         <servlet-name>getAllFriendsListServlet</servlet-name>
         <url-pattern>/getAllFriendsListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>shareCodeServlet</servlet-name>
+        <url-pattern>/shareCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>likeCodeServlet</servlet-name>
+        <url-pattern>/likeCodeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

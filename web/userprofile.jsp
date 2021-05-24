@@ -148,7 +148,7 @@
                                 <a href="./index.jsp">Home</a>
                             </li>
                             <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
-                                <a href="about.html">about</a>
+                                <a href="./about.jsp">about</a>
                             </li>
                             <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
                                 <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -159,11 +159,12 @@
                                 <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
                                     <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                     <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
-                                    <a class="view-show" href="./viewFriends.jsp">Friends</a>
+                                    <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
+                                    <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
                                 </div>
                             </li>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
-                                <a href="contact.html">contact</a>
+                                <a href="./contact.jsp">contact</a>
                             </li>
                         </ul>
                             <div class="dropdown">
@@ -288,13 +289,60 @@
         <%
             }
         %>
- 
+         
+        <div class="container">
+    <div class="row my-3">
+        <div class="col">
+            <h4>Bootstrap 4 Chart.js</h4>
+        </div>
+    </div>
+    <div class="row my-2">
+        <div class="col-md-6 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chLine"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chBar"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-4 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chDonut1"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chDonut2"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chDonut3"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+      
     <%@include file="footer.html" %>    
     </body>
 <%
     }
 %>
-
+    
 
 <%@include file="footerfiles.html" %>
 

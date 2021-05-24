@@ -16,7 +16,30 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
-            function getAllFriendsList(){
+            function shareCode(scid,username){
+                var scid = scid;
+                var sharedwith = username;
+                
+                var formdata = new FormData();
+                formdata.append("scid",scid);
+                formdata.append("sharedwith",sharedwith);
+                
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        console.log(response);
+                        $("#friendListModal").modal("hide");
+                    }
+                };
+                xmlhttp.open("POST","./shareCodeServlet", true);
+                xmlhttp.send(formdata);
+                
+            }
+            function getAllFriendsList(scid){
+                var scid = scid;
+                var formdata=new FormData();
+                formdata.append("scid",scid);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -38,7 +61,7 @@
                                 output+='</div>'
                                 
                                 output+='<div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">'
-                                  output+='<button class="btn mx-3" style="background-color: #17a2b8; color: white;" >Share</button>'
+                                  output+='<button class="btn mx-3" style="background-color: #17a2b8; color: white;" onclick="shareCode('+scid+','+'\''+username+'\''+')">Share</button>'
                                 output+='</div>'
                                 output+='</div>'    
                             output+='</div>';
@@ -50,7 +73,7 @@
                     }
                 };
                 xmlhttp.open("POST","./getAllFriendsListServlet", true);
-                xmlhttp.send();
+                xmlhttp.send(formdata);
             }
       </script>
       
@@ -123,7 +146,7 @@
                                     <a href="./index.jsp">Home</a>
                                 </li>
                                 <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
-                                    <a href="about.html">about</a>
+                                    <a href="./about.jsp">about</a>
                                 </li>
                                 <li class="nav-item dropdown mr-lg-4 my-lg-0 my-sm-4 my-3">
                                     <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -134,11 +157,12 @@
                                     <div class="dropdown-menu view-menu" aria-labelledby="navbarDropdown">
                                         <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                         <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
-                                        <a class="view-show" href="./viewFriends.jsp">Friends</a>
+                                        <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
+                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
                                     </div>
                                 </li>
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
-                                    <a href="contact.html">contact</a>
+                                    <a href="./contact.jsp">contact</a>
                                 </li>
                             </ul>
                                 <div class="dropdown">
@@ -187,6 +211,7 @@
                 while(rs.next()){
                     String lang=rs.getString("lang");
                     String title=rs.getString("title");
+                    int scid = rs.getInt("scid");
                 
     %>
     
@@ -232,7 +257,7 @@
                                   </div>
                                   <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
                                     <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;">View Code</button>
-                                    <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="getAllFriendsList()">Share Code</button>
+                                    <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="getAllFriendsList(<%=scid%>)">Share Code</button>
                                   </div>
                                 </div>
                             </div>
