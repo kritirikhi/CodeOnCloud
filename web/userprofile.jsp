@@ -57,6 +57,8 @@
         }
     </script>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js"></script>
+    
     <%@include file="headerfiles.html" %>
     
     <style>
@@ -160,7 +162,8 @@
                                     <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                     <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
                                     <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
-                                    <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
+                                    <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>                              
+                                    <a class="view-show" href="./viewSharedCodes.jsp">View Shared Codes</a>
                                 </div>
                             </li>
                             <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
@@ -187,6 +190,7 @@
             try{
                 ResultSet rs = DBLoader.executeSQl("select name,photo,email,primarylanguage from users where username=\""+profileusername+"\"");
                 ResultSet friendset = DBLoader.executeSQl("select * from friends where requestfrom = '"+sessionusername.toString()+"' and requestto = '"+profileusername+"'");
+                
                 if(rs.next()){
                     String name = rs.getString("name");
                     String photo = rs.getString("photo");
@@ -194,7 +198,7 @@
                     String primarylanguage = rs.getString("primarylanguage");
         %>
                     
-                    <section style="max-width: 1000px; margin: 0 auto; margin-top:30px; margin-bottom: 50px;">
+                    <section style="max-width: 1200px; margin: 0 auto; margin-top:30px; margin-bottom: 50px;">
                         <div class="card shadow my-4 mx-3">
                           <div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">
                             <div class="col-12 col-md-3 my-1 text-center">
@@ -289,54 +293,112 @@
         <%
             }
         %>
-         
-        <div class="container">
-    <div class="row my-3">
-        <div class="col">
-            <h4>Bootstrap 4 Chart.js</h4>
+        
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-sm-6" style="overflow-y: scroll; height:250px">
+                <section style="margin: 0 auto; margin-top:30px; margin-bottom: 50px;">
+                <%
+                    try{ 
+                        ResultSet mutualFriends = DBLoader.executeSQl("select * from friends where status='friends' and requestfrom='"+sessionusername.toString()+"' and requestto in (select requestto from friends where status='friends' and requestfrom='"+profileusername+"')  ");
+                        while(mutualFriends.next()){
+                            String username = mutualFriends.getString("requestto");
+                            ResultSet userphoto = DBLoader.executeSQl("select photo from users where username='"+username+"'");
+                            String mutualphoto="";
+                            if(userphoto.next()){
+                                mutualphoto = userphoto.getString(1);
+                            }
+                %>
+                        
+                        <div class="card shadow my-4 mx-3">
+                            <div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">
+                              <div class="col-12 col-md-3 my-1 text-center">
+                                <img class="rounded-circle" style="width: 130px; height: 130px;" src="./myuploads/<%=mutualphoto%>" alt="Profile image cap">
+                              </div>
+                              <div class="col-12 col-md-3">
+                                <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Name: </span> <%=username%></p>
+                                <input type="hidden" id="profileusername" value="<%=profileusername%>" />
+                              </div>
+                              
+                           </div>
+                        </div>
+                
+                <%
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                
+                %>
+                </section>
+            </div>
+                
+             <%
+             
+                try{
+                    
+                    ResultSet cCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='c' and username='"+profileusername+"'");
+                        int c_count=0,cpp_count=0,java_count=0,python_count=0;
+                        if(cCount.next()){
+                            c_count = Integer.parseInt(cCount.getString(1));
+                        }
+
+                        ResultSet cppCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='cpp' and username='"+profileusername+"'");
+                        if(cppCount.next()){
+                            cpp_count = Integer.parseInt(cppCount.getString(1));
+                        }
+
+                        ResultSet javaCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='java' and username='"+profileusername+"'");
+                        if(javaCount.next()){
+                            java_count = Integer.parseInt(cCount.getString(1));
+                        }
+
+                        ResultSet pythonCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='python' and username='"+profileusername+"'");
+                        if(pythonCount.next()){
+                            python_count = Integer.parseInt(pythonCount.getString(1));
+                        }
+                    
+                    
+             %>
+                <div class="col-sm-6">
+                    <canvas id="myChart"></canvas>
+                </div>
+                
+                <script>
+                    let myChart = document.getElementById("myChart").getContext('2d');
+                    let barChart = new Chart();
+
+                    let massPopChart = new Chart(myChart,{
+                       type:'bar',
+                       data:{
+                           labels:["C","C++","Python","Java"],
+                           datasets:[{
+                              label:'Code Contribution',
+                              data:["<%=c_count%>","<%=cpp_count%>","<%=python_count%>","<%=java_count%>"],
+                              backgroundColor:['rgba(255,99,132,0.6)','rgba(54,162,235,0.6)','rgba(255,206,86,0.6)','rgba(75,192,192,0.6)']
+
+                           }]
+                       },
+                       options:{
+
+                       }
+                    });
+                </script>
+            
+            
+            <%
+                    
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+             
+             %>
+            
+            
         </div>
     </div>
-    <div class="row my-2">
-        <div class="col-md-6 py-1">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chLine"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 py-1">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chBar"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row py-2">
-        <div class="col-md-4 py-1">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chDonut1"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 py-1">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chDonut2"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 py-1">
-            <div class="card">
-                <div class="card-body">
-                    <canvas id="chDonut3"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-      
     <%@include file="footer.html" %>    
     </body>
 <%

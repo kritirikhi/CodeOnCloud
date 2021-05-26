@@ -96,6 +96,14 @@
         <servlet-name>likeCodeServlet</servlet-name>
         <servlet-class>likeCodeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addCommentServlet</servlet-name>
+        <servlet-class>addCommentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewcommentsServlet</servlet-name>
+        <servlet-class>viewcommentsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -191,6 +199,14 @@
     <servlet-mapping>
         <servlet-name>likeCodeServlet</servlet-name>
         <url-pattern>/likeCodeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addCommentServlet</servlet-name>
+        <url-pattern>/addCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewcommentsServlet</servlet-name>
+        <url-pattern>/viewcommentsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

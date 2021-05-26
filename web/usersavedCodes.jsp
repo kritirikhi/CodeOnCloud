@@ -15,7 +15,20 @@
       <title>Code On Cloud</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
-      <script>
+        <script>
+            function viewcode(filepath){
+                console.log(filepath);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = this.responseText;
+                        document.getElementById("codeDisplay").innerHTML=response;
+                        $("#viewCodeModal").modal("show");
+                    }
+                };
+                xmlhttp.open("GET","./all_users_data/"+filepath, true);
+                xmlhttp.send();
+            }
             function shareCode(scid,username){
                 var scid = scid;
                 var sharedwith = username;
@@ -158,7 +171,8 @@
                                         <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                         <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
                                         <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
-                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
+                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>                            
+                                        <a class="view-show" href="./viewSharedCodes.jsp">View Shared Codes</a>
                                     </div>
                                 </li>
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
@@ -170,7 +184,9 @@
                                       Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                     </button>
                                     <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
-                                      <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
+                                      <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>                                      
+                                      <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
+
                                       <a class="dropdown-item" href="./userLogout">Logout</a>
                                     </div>
                                 </div>
@@ -211,6 +227,8 @@
                 while(rs.next()){
                     String lang=rs.getString("lang");
                     String title=rs.getString("title");
+                    String filepath =rs.getString("filepath");
+                    filepath=filepath.replace("\\","\\\\");
                     int scid = rs.getInt("scid");
                 
     %>
@@ -256,7 +274,7 @@
                                     <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Title: </span> <%=title%></p>
                                   </div>
                                   <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
-                                    <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;">View Code</button>
+                                      <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="viewcode('<%=filepath%>')">View Code</button>
                                     <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="getAllFriendsList(<%=scid%>)">Share Code</button>
                                   </div>
                                 </div>
@@ -271,6 +289,28 @@
     
     %>
     </section>
+    
+   
+
+    <!-- View Code Modal -->
+    <div class="modal fade" id="viewCodeModal" tabindex="-1" role="dialog" aria-labelledby="viewCodeModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Code</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <p id="codeDisplay" style="white-space: pre-wrap"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
   <%@include file="footer.html" %>  
   </body>

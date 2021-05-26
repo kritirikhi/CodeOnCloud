@@ -22,6 +22,15 @@
                 var language = document.getElementById("language").value;
                 language=language.toLowerCase();
                 
+                if(codeTitle===""){
+                    alert("Please Write The Code");
+                    return;
+                }
+                if(codeTitle.length>300){
+                    alert("Title can't be too long");
+                    return;
+                }
+                
                 if(language==="c++"){
                     language="cpp";
                 }
@@ -327,7 +336,8 @@
                                         <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                         <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
                                         <a class="view-show" href="./viewFriends.jsp">Friends</a>                                
-                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
+                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>                              
+                                        <a class="view-show" href="./viewSharedCodes.jsp">View Shared Codes</a>
                                     </div>
                                 </li>
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">

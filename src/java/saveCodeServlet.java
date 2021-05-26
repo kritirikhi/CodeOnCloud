@@ -66,7 +66,7 @@ public class saveCodeServlet extends HttpServlet {
             
             String oldpath = absolutepath + "\\" + foldername + "\\" + language + "\\" + filename + "." + extension;
             String newpath = absolutepath + "\\" + username + "\\" + language + "\\" + filename + "." + extension;
-            
+            String databasepath = "./all_users_data"+"\\"+username+"\\"+language+"\\"+filename+"."+extension;
             
             FileReader fr = new FileReader(oldpath);    
             FileWriter fw = new FileWriter(newpath);
@@ -87,7 +87,7 @@ public class saveCodeServlet extends HttpServlet {
                 rs.updateString("lang", language);
                 rs.updateString("title", codeTitle);
                 rs.updateString("username", username);
-                rs.updateString("filepath", newpath);
+                rs.updateString("filepath", databasepath);
                 rs.insertRow();
                 
                 String type="Success";

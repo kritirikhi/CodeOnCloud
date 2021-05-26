@@ -19,12 +19,90 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
+            function viewcomments(shid){
+                var formdata = new FormData();
+                formdata.append("shid",shid);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        var arr = response["ans"];
+                        console.log(arr);
+                        
+                        var output="";
+                        output+='<section style="max-width: 800px; margin: 0 auto; margin-bottom: 20%">';
+                        for(var i=0;i<arr.length;i++){
+                            var username = arr[i].commentedby;
+                            var commenttext = arr[i].commenttext;
+                            
+                            output+='<div class="card shadow my-4 mx-3">'
+                                output+='<div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">';
+                                output+='<div class="col-12 col-md-3 my-1">'
+                                    output+="By: "
+                                    output+="<strong>"
+                                    output+=username
+                                    output+="</strong>"
+                                output+='</div>'
+                                
+                                output+='<div class="col-12 col-md-9">'
+                                output+='<p style="text-align: justify">'
+                                    output+=commenttext
+                                output+='</p>'
+                                output+='</div>'
+                                
+                                output+='<div class="col-12 col-md-2 d-flex justify-content-center justify-content-md-end d-flex mt-2">'
+                                output+='</div>'
+                                output+='</div>'    
+                            output+='</div>';
+                            
+                        }
+                        output+='</section>'
+                        
+                        document.getElementById("commentsDisplay").innerHTML=output;
+                        $("#viewCommentsModal").modal("show");
+                    }
+                };
+                xmlhttp.open("POST","./viewcommentsServlet", true);
+                xmlhttp.send(formdata); 
+            }
+          
+            function addcomment(shid){
+                var shid = shid
+                var commenttext = document.getElementById("commenttext"+shid).value
+                if(commenttext===""){
+                    alert("Please Write The Comment");
+                    return;
+                }
+                if(commenttext.length>400){
+                    alert("Comment can't be too long");
+                    return;
+                }
+                var formdata = new FormData()
+                formdata.append("shid",shid)
+                formdata.append("commenttext",commenttext)
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response=JSON.parse(this.responseText);
+                        if(response["type"]==="Success"){
+                            document.getElementById("commenttext"+shid).value="";
+                            $("#addcommentSuccess").modal("show");
+                        }
+                        else{
+                            document.getElementById("commentMessage").innerHTML=response["message"];
+                            $("#addcommentFail").modal("show");
+                        }
+                    }
+                };
+                xmlhttp.open("POST","./addCommentServlet", true);
+                xmlhttp.send(formdata);
+            }
           
           function likeCode(shid){
-              console.log(shid);
-              var formdata = new FormData();
-              formdata.append("shid",shid);
-              var xmlhttp = new XMLHttpRequest();
+                console.log(shid);
+                var formdata = new FormData();
+                formdata.append("shid",shid);
+                var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var response = JSON.parse(this.responseText);
@@ -55,6 +133,9 @@
          
           .card{
             position: relative;
+          }
+          .view-show:hover{
+              background: #e7e4e4!important;
           }
           
           @media screen and (max-width: 768px){
@@ -113,7 +194,8 @@
                                         <a class="view-show" href="./viewFriendRequests.jsp">Friend Requests</a>
                                         <a class="view-show" href="./viewSentRequests.jsp">Sent Requests</a>
                                         <a class="view-show" href="./viewFriends.jsp">Friends</a>                    
-                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>
+                                        <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>                          
+                                        <a class="view-show" href="./viewSharedCodes.jsp">View Shared Codes</a>
                                     </div>
                                 </li>
                                 <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
@@ -125,7 +207,9 @@
                                       Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                     </button>
                                     <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
-                                      <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
+                                      <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>                                      
+                                      <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
+
                                       <a class="dropdown-item" href="./userLogout">Logout</a>
                                     </div>
                                 </div>
@@ -138,7 +222,7 @@
     
     <h1 class="heading my-3">Shared Codes</h1>
     
-    <section style="max-width: 800px; margin: 0 auto; margin-bottom: 20%">
+    <section style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%">
     <%  
         try{
             ResultSet rs = DBLoader.executeSQl("select * from sharedcodes where sharedwith='"+sessionusername.toString()+"'");  
@@ -146,25 +230,20 @@
                     String ownedby = rs.getString("ownedby");
                     int scid = rs.getInt("scid");
                     int shid = rs.getInt("shid");
-                    
                     try{
                         ResultSet rs2 = DBLoader.executeSQl("select * from savedcodes where scid='"+scid+"'");
                         if(rs2.next()){
                             String filepath = rs2.getString("filepath");
+                            String absolutepath = request.getServletContext().getRealPath("/all_users_data");
+                            filepath = absolutepath+"\\"+filepath;
+                            System.out.println(filepath);
                             String title = rs2.getString("title");
                             title=title.toUpperCase();
                             String codetext="";
                             FileReader fr = new FileReader(filepath);
                             int line = fr.read();
                             while (line != -1) {
-                                System.out.print((char) line);
-                                if((char)line == '\n'){
-                                    System.out.println("jdfb");
-                                    codetext+="<br>";
-                                }
-                                else{
-                                    codetext+=(char) line;
-                                }
+                                codetext+=(char) line;
                                 line = fr.read();
                             }
                             fr.close(); 
@@ -174,13 +253,11 @@
                                 <div class="container  brown-text">
                                     <div class="col-sm mt-5">
                                         <div class="blog-post">
-                                            
-                                            <!--style="color:#5c6acb"-->
                                             <h2 class="blog-post-title" style="color:#0d2865"><%=title%></h2>
-                                            <p class="blog-post-meta">(June 30, 2020, 5:51 a.m.)<b>by</b> <%=ownedby%> </p>
+                                            <p class="blog-post-meta">(<%=rs.getDate("dateandtime")%> , <%=rs.getTime("dateandtime")%>) &nbsp;<b>by</b> &nbsp;<%=ownedby%> </p>
                                             <hr>
                                             <div class="preview" style="font-size:18px">
-                                              <p class="text-dark" style="text-align:justify"> <%=codetext%> </p>
+                                              <p class="text-dark" style="text-align:justify; white-space:pre-wrap"> <%=codetext%> </p>
                                             </div>
                                         </div>
                                     </div>
@@ -189,12 +266,7 @@
 
 
                                 <div class="container">
-                                  <form class="form-group mt-4" action="bookmark" method="POST">
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="tDao2bX1oiTYS09JoOfwE7aXH2rt7gsPNnPRhASse7ivyCCCvXqBquHazQ4Mc5aW">
-                                        <div class="form-group col-sm mb-2">
-                                            <input type="hidden" class="form-control" id="postsno" name="postsno" value="1" >
-                                        </div>
-                                        <div class="form-group col-sm mb-2">
+                                  <form class="form-group">
                                             <%
                                                try{
                                                 ResultSet likeset = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and shid='"+shid+"'");
@@ -205,8 +277,8 @@
                                                 }
                                                 if(likeset.next()){
                                             %>
-                                            
-                                                    <button type="button" id="likedBtn" class="btn btn-danger mb-4" onclick="likeCode(<%=shid%>)">Liked</button>
+                                                   <div class="container">
+                                                    <button type="button" id="likedBtn" class="btn btn-danger" onclick="likeCode(<%=shid%>)">Liked</button>
                                             
                                             
                                             <%        
@@ -214,23 +286,29 @@
                                                 else{
                                             %>
                                             
-                                                    <button type="button" id="likeBtn" class="btn btn-danger mb-4" onclick="likeCode(<%=shid%>)" style="background: white; color:black">Like</button>
-                                                    
+                                                    <button type="button" id="likeBtn" class="btn btn-danger" onclick="likeCode(<%=shid%>)" style="background: white; color:black">Like</button>
+                                                  
                                             <%
                                                 }
                                             %>
                                             
-                                            <button type="button" id="totalLikes" class="btn mb-4" style="background:white; color:black" disabled><%=totalLikes%> <span>Likes</span></button>
-                                                    
+                                                    <button type="button" id="totalLikes" class="btn" style="background:white; color:black" disabled><%=totalLikes%> <span>Likes</span></button>
+                                                    </div>
+                                             
                                             <%
                                                }
                                                catch(Exception e){
                                                    
                                                }
                                             %>
-                                          
-                                        </div>       
-                                  </form>
+                                    </form>
+                                    <div class="container" style="position:relative">
+                                        <label for="commenttext" >Post Your Comment Here</label>
+                                        <input type="text" class="form-control" id="commenttext<%=shid%>" aria-describedby="commenttext" placeholder="Your Comment">
+                                        <button type="button" class="btn btn-dark mt-3 mb-5" onclick="addcomment(<%=shid%>)">Comment</button>
+                                        <button type="button" class="btn btn-dark mt-3 mb-5" style="position:absolute; right:15px" onclick="viewcomments(<%=shid%>)">View Comments</button>
+                                    </div>
+                                  
                                 </div>
                             </div>
                                     
@@ -249,6 +327,65 @@
     
     %>
     </section>
+  
+
+    <!-- Comment add success Modal -->
+    <div class="modal fade" id="addcommentSuccess" tabindex="-1" role="dialog" aria-labelledby="addcommentSuccess" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="background:#99ff99">
+              <span>Comment Added Successfully</span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Comment add fail Modal -->
+    <div class="modal fade" id="addcommentFail" tabindex="-1" role="dialog" aria-labelledby="addcommentFail" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="background:#ff3333">
+              <span id="commentMessage"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- View Comments Modal -->
+    <div class="modal fade" id="viewCommentsModal" tabindex="-1" role="dialog" aria-labelledby="viewCommentsModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewCommentsModalTitle">Comments</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="commentsDisplay">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   <%@include file="footer.html" %>  
   </body>
   <%@include file="footerfiles.html" %>
