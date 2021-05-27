@@ -31,6 +31,61 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i"
         rel="stylesheet">
     
+    
+    <script>
+        function validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }                                    
+            
+        function contact(){
+            var firstname=document.getElementById("firstname").value;
+            var lastname=document.getElementById("lastname").value;
+            var email=document.getElementById("email").value;
+            var phoneno=document.getElementById("phoneno").value;
+            var message=document.getElementById("message").value;
+            
+            if (firstname==="" || lastname==="" || email==="" || phoneno==="" || message===""){
+                alert("All Fields Are Necessary");
+                return;
+            }
+            
+            if(!(validateEmail(email))){
+                alert("Invalid Email ID");
+                return;
+            }
+            
+            for(var i=0;i<phoneno.length;i++){
+                if(!(phoneno[i]>='0' && phoneno[i]<='9')){
+                    alert("Invalid Phone Number");
+                    return;
+                }
+            }
+            
+            if(phoneno.length!=10){
+                alert("Phone Number Must Have 10 Digits");
+                return;
+            }
+            
+            var formdata=new FormData();
+            formdata.append("firstname",firstname);
+            formdata.append("lastname",lastname);
+            formdata.append("email",email);
+            formdata.append("phoneno",phoneno);
+            formdata.append("message",message);
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        alert( response["type"]+" : "+response["message"]  );
+                }
+            };
+            xmlhttp.open("POST","./contactServlet", true);
+            xmlhttp.send(formdata);
+        }
+    </script>
+    
     <style>
         
         .view-show:hover{
@@ -77,7 +132,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="ml-lg-5 navbar-nav mr-lg-auto">
-                            <li class="nav-item active  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
+                            <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="./index.jsp">Home</a>
                             </li>
                             <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
@@ -104,7 +159,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <%
                                 }
                             %>
-                            <li class="nav-item mr-lg-4 my-lg-0 mb-sm-4 mb-3">
+                            <li class="nav-item active mr-lg-4 my-lg-0 mb-sm-4 mb-3">
                                 <a href="./contact.jsp">contact</a>
                             </li>
                         </ul>
@@ -204,26 +259,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <hr>
             <div class="row">
                 <div class="col-12 mx-auto">
-                    <!-- register form grid -->
+                    
+                    <!-- contact form grid -->
                     <div class="register-top1 py-lg-3">
                         <div class="title-sec-w3layouts_pvt text-center">
                             <h4 class="w3layouts_pvt-head">How Can We Help You?</h4>
                         </div>
-                        <form action="#" method="get" class="register-wthree pt-md-5 pb-md-0 py-4">
+                        <form class="register-wthree pt-md-5 pb-md-0 py-4">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>
                                             First name
                                         </label>
-                                        <input class="form-control" type="text" placeholder="First Name" name="email"
-                                            required="">
+                                        <input class="form-control" type="text" placeholder="First Name" id="firstname" required>
                                     </div>
                                     <div class="col-md-6 mt-md-0 mt-4">
                                         <label>
                                             Last name
                                         </label>
-                                        <input class="form-control" type="text" placeholder="Last Name" name="name" required="">
+                                        <input class="form-control" type="text" placeholder="Last Name" id="lastname" required>
                                     </div>
                                 </div>
                             </div>
@@ -233,15 +288,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <label>
                                             Mobile
                                         </label>
-                                        <input class="form-control" type="text" placeholder="xxxxxxxxxx" name="email"
-                                            required="">
+                                        <input class="form-control" type="tel" maxlength="10" placeholder="xxxxxxxxxx" id="phoneno" required>
                                     </div>
                                     <div class="col-md-6 mt-md-0 mt-4">
                                         <label>
                                             Email
                                         </label>
-                                        <input class="form-control" type="email" placeholder="example@email.com" name="email"
-                                            required="">
+                                        <input class="form-control" type="email" placeholder="example@email.com" id="email" required>
                                     </div>
                                 </div>
                             </div>
@@ -251,13 +304,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                         <label>
                                             Your message
                                         </label>
-                                        <textarea placeholder="Type your message here" class="form-control"></textarea>
+                                        <textarea placeholder="Type your message here" class="form-control" id="message" required></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-agile btn-block w-100 font-weight-bold text-uppercase bg-theme">Send</button>
+                                    <button type="button" class="btn btn-agile btn-block w-100 font-weight-bold text-uppercase bg-theme" onclick="contact()">Send</button>
                                 </div>
                             </div>
                         </form>
@@ -280,24 +333,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
     <!-- js -->
     <script src="js/jquery-2.2.3.min.js"></script>
-    <!-- script for password match -->
-    <script>
-        window.onload = function () {
-            document.getElementById("password1").onchange = validatePassword;
-            document.getElementById("password2").onchange = validatePassword;
-        }
-
-        function validatePassword() {
-            var pass2 = document.getElementById("password2").value;
-            var pass1 = document.getElementById("password1").value;
-            if (pass1 != pass2)
-                document.getElementById("password2").setCustomValidity("Passwords Don't Match");
-            else
-                document.getElementById("password2").setCustomValidity('');
-            //empty string means no validation error
-        }
-    </script>
-    <!-- script for password match -->
+    
     <script src="js/move-top.js"></script>
     <script src="js/easing.js"></script>
     <script>
@@ -315,15 +351,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- smooth-scrolling-of-move-up -->
     <script>
         $(document).ready(function () {
-            /*
-            var defaults = {
-                containerID: 'toTop', // fading element id
-                containerHoverID: 'toTopHover', // fading element hover id
-                scrollSpeed: 1200,
-                easingType: 'linear' 
-            };
-            */
-
+           
             $().UItoTop({
                 easingType: 'easeOutQuart'
             });

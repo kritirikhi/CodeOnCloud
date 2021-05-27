@@ -18,6 +18,7 @@
       <title>Code On Cloud</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
       <script>
             function viewcomments(shid){
                 var formdata = new FormData();
@@ -137,6 +138,10 @@
           .view-show:hover{
               background: #e7e4e4!important;
           }
+          .like-color{
+              color:red;
+              vertical-align: middle;
+          }
           
           @media screen and (max-width: 768px){
             #navbarSupportedContent{
@@ -236,7 +241,6 @@
                             String filepath = rs2.getString("filepath");
                             String absolutepath = request.getServletContext().getRealPath("/all_users_data");
                             filepath = absolutepath+"\\"+filepath;
-                            System.out.println(filepath);
                             String title = rs2.getString("title");
                             title=title.toUpperCase();
                             String codetext="";
@@ -275,26 +279,19 @@
                                                 if(likeset2.next()){
                                                     totalLikes=likeset2.getInt(1);
                                                 }
+                                                String likeClassName="";
                                                 if(likeset.next()){
-                                            %>
-                                                   <div class="container">
-                                                    <button type="button" id="likedBtn" class="btn btn-danger" onclick="likeCode(<%=shid%>)">Liked</button>
-                                            
-                                            
-                                            <%        
+                                                    likeClassName="fas";
                                                 }
                                                 else{
-                                            %>
-                                            
-                                                    <button type="button" id="likeBtn" class="btn btn-danger" onclick="likeCode(<%=shid%>)" style="background: white; color:black">Like</button>
-                                                  
-                                            <%
+                                                    likeClassName="far";
                                                 }
                                             %>
+                                                   <div class="container">
+                                                    <i class="<%=likeClassName%> fa-heart like-color" id="likedBtn" onclick="likeCode(<%=shid%>)"></i>
                                             
                                                     <button type="button" id="totalLikes" class="btn" style="background:white; color:black" disabled><%=totalLikes%> <span>Likes</span></button>
                                                     </div>
-                                             
                                             <%
                                                }
                                                catch(Exception e){

@@ -1,3 +1,39 @@
+<script>
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}                                    
+           
+function subscribe(){
+    var email = document.getElementById("subscribeemail").value;
+    if (email===""){
+        alert("Pleae Fill The Email Id");
+        return;
+    }
+    if(!(validateEmail(email))){
+        alert("Invalid Email ID");
+        return;
+    }
+    
+    var formdata = new FormData();
+    formdata.append("email",email);
+    
+    var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    document.getElementById("subscribeemail").value="";
+                    alert(response["type"]+": "+response["message"]);
+                }
+            };
+            xmlhttp.open("POST","./subscribeServlet", true);
+            xmlhttp.send(formdata);
+}
+
+
+</script>
+
+
 <!-- Footer -->
     <footer id="footer" class="py-sm-5 py-4 bg-theme">
         <div class="container">
@@ -72,14 +108,12 @@
                 </div>
                 <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5">
                     <h5>Subscribe To Get Notifications</h5>
-                    <form action="#" method="post">
+                    <form>
                         <div class="form-group">
-                            <input type="email" class="form-control  border-0 border-rounded" id="emailid" placeholder="Enter email"
-                                name="email" required>
+                            <input type="email" class="form-control  border-0 border-rounded" id="subscribeemail" placeholder="Enter email" required>
                         </div>
                         <div class="form-group">
-                            <input type="Submit" class="form-control bg-light-theme  border-0 border-rounded" id="sub"
-                                value="Submit" name="sub">
+                            <input type="button" class="form-control bg-light-theme  border-0 border-rounded" value="Subscribe" onclick="subscribe()">
                         </div>
                     </form>
                 </div>

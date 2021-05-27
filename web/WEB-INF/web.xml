@@ -104,6 +104,14 @@
         <servlet-name>viewcommentsServlet</servlet-name>
         <servlet-class>viewcommentsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>contactServlet</servlet-name>
+        <servlet-class>contactServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>subscribeServlet</servlet-name>
+        <servlet-class>subscribeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -207,6 +215,14 @@
     <servlet-mapping>
         <servlet-name>viewcommentsServlet</servlet-name>
         <url-pattern>/viewcommentsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>contactServlet</servlet-name>
+        <url-pattern>/contactServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>subscribeServlet</servlet-name>
+        <url-pattern>/subscribeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

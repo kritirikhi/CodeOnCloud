@@ -89,6 +89,10 @@
          .view-show:hover{
             background:#e7e4e4!important;
         }
+        .mutual-friends-wrapper{
+            overflow-y: scroll; 
+            height:250px;
+        }
         @media screen and (max-width: 768px){
             #navbarSupportedContent{
                 margin:0 auto;
@@ -108,7 +112,11 @@
                 transform:translateX(-50%);
                 z-index: 11;
             }
-            
+        }
+        @media screen and (max-width: 767px){
+            .mutual-friends-wrapper{
+                height:unset;
+            }
         }
         
     </style>
@@ -175,7 +183,8 @@
                                   Welcome &nbsp;<%=(session.getAttribute("username")).toString()%>
                                 </button>
                                 <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
-                                  <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
+                                  <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>                                  
+                                  <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
                                   <a class="dropdown-item" href="./userLogout">Logout</a>
                                 </div>
                             </div>
@@ -296,8 +305,9 @@
         
     <div class="container mb-5">
         <div class="row">
-            <div class="col-sm-6" style="overflow-y: scroll; height:250px">
-                <section style="margin: 0 auto; margin-top:30px; margin-bottom: 50px;">
+            <div class="col-sm-6 mutual-friends-wrapper">
+                <h3 class="ml-3" style="color:#0d2865">Mutual Friends</h3>
+                <section class="shadow" style="margin: 0 auto; margin-top:30px; margin-bottom: 50px; padding:2px">
                 <%
                     try{ 
                         ResultSet mutualFriends = DBLoader.executeSQl("select * from friends where status='friends' and requestfrom='"+sessionusername.toString()+"' and requestto in (select requestto from friends where status='friends' and requestfrom='"+profileusername+"')  ");
@@ -313,13 +323,15 @@
                         <div class="card shadow my-4 mx-3">
                             <div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">
                               <div class="col-12 col-md-3 my-1 text-center">
-                                <img class="rounded-circle" style="width: 130px; height: 130px;" src="./myuploads/<%=mutualphoto%>" alt="Profile image cap">
+                                <img class="rounded-circle" style="width: 50px; height: 50px;" src="./myuploads/<%=mutualphoto%>" alt="Profile image cap">
                               </div>
-                              <div class="col-12 col-md-3">
+                              <div class="col-12 col-md-6">
                                 <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Name: </span> <%=username%></p>
-                                <input type="hidden" id="profileusername" value="<%=profileusername%>" />
+                                
                               </div>
-                              
+                              <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-end d-flex mt-2">
+                                  <a href="./userprofile.jsp?username=<%=username%>" class="btn mx-3 btn-sm" style="background-color: #17a2b8; color: white;">Profile</a>      
+                              </div>
                            </div>
                         </div>
                 
@@ -409,6 +421,3 @@
 <%@include file="footerfiles.html" %>
 
 </html>
-
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->

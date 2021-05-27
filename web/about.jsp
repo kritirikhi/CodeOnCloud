@@ -32,6 +32,214 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         rel="stylesheet">
     
     
+    <script>
+        function validateEmail(email) {
+            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }                                    
+                                        
+        function userSignupLogic(){
+            var username=document.getElementById("username").value;
+            var name=document.getElementById("name").value;
+            var email=document.getElementById("email").value;
+            var phoneno=document.getElementById("phoneno").value;
+            var gender=document.getElementById("gender").value;
+            var primarylanguage=document.getElementById("primarylanguage").value;
+            var password1=document.getElementById("password1").value;
+            var password2=document.getElementById("password2").value;
+            var photo=document.getElementById("photo").files[0];
+            
+            if (username==="" || name==="" || email==="" || phoneno==="" || gender==="" || primarylanguage==="" || password1==="" || password2===""){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "All Fields Are Necessary";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.transition="all 1s ease-out";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                setTimeout(function(){
+                    document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+            
+            if(!(validateEmail(email))){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "Invalid Email ID";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                setTimeout(function(){
+                    document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+            
+            for(var i=0;i<phoneno.length;i++){
+                if(!(phoneno[i]>='0' && phoneno[i]<='9')){
+                    document.getElementById("signupMsgType").innerHTML = "Error : ";
+                    document.getElementById("signupMsg").innerHTML = "Invalid Phone Number";
+                    document.getElementById("signupMsgDisplay").style.display="block";
+                    document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                    setTimeout(function(){
+                        document.getElementById("signupMsgDisplay").style.display="none";
+                    }, 2000); 
+                    
+                    return;
+                }
+            }
+            
+            if(phoneno.length!=10){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "Phone Number Must Have 10 Digits";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";    
+                setTimeout(function(){
+                   document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+            
+            if (!(password1 === password2)){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "Passwords Do Not Match";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";   
+                setTimeout(function(){
+                    document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+            
+            if (password1.length<8){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "Password should have more than 7 characters";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                setTimeout(function(){
+                    document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+            
+            if(photo==null){
+                document.getElementById("signupMsgType").innerHTML = "Error : ";
+                document.getElementById("signupMsg").innerHTML = "Upload Profile Photo";
+                document.getElementById("signupMsgDisplay").style.display="block";
+                document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                setTimeout(function(){
+                    document.getElementById("signupMsgDisplay").style.display="none";
+                }, 2000); 
+                
+                return;
+            }
+
+            var formdata = new FormData();
+            formdata.append("username",username);
+            formdata.append("name",name);
+            formdata.append("email",email);
+            formdata.append("phoneno",phoneno);
+            formdata.append("gender",gender);
+            formdata.append("primarylanguage",primarylanguage);
+            formdata.append("password1",password1);            
+            formdata.append("password2",password2);
+            formdata.append("photo",photo);
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        var msgtype = response["type"];
+                        var message = response["message"];
+                        
+                        if(msgtype=="Error"){
+                            document.getElementById("signupMsgDisplay").style.background="#ff3333";
+                        }
+                        else if(msgtype=="Success"){
+                            document.getElementById("signupMsgDisplay").style.background="#99ff99";
+                            
+                        }
+                        document.getElementById("signupMsgType").innerHTML = msgtype+" : ";
+                        document.getElementById("signupMsg").innerHTML = message;
+                        document.getElementById("signupMsgDisplay").style.display="block";
+                        
+                        if(msgtype=="Error"){
+                            setTimeout(function(){
+                                document.getElementById("signupMsgDisplay").style.display="none";
+                            }, 2000); 
+                        }
+                        else if(msgType="Success"){
+                            setTimeout(function(){
+                                document.getElementById("signupMsgDisplay").style.display="none";
+                                $("#userSignupModal").modal("hide");                                
+                                $("#userLoginModal").modal("show");
+                            }, 2000);
+                            
+                        }
+                }
+            };
+            xmlhttp.open("POST","./userSignupServlet", true);
+            xmlhttp.send(formdata);
+        }
+        
+        function userLoginLogic(){
+            var lusername=document.getElementById("lusername").value;
+            var lpassword=document.getElementById("lpassword").value;
+            
+            if(lusername==="" || lpassword==""){
+                document.getElementById("loginMsgDisplay").style.background="#ff3333";
+                document.getElementById("loginMsgType").innerHTML = "Error : ";
+                document.getElementById("loginMsg").innerHTML = "All Fields Are Mandatory";
+                document.getElementById("loginMsgDisplay").style.display="block";
+                return;
+            }
+            
+            var formdata = new FormData();
+            formdata.append("lusername",lusername);
+            formdata.append("lpassword",lpassword);
+            
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        var msgtype = response["type"];
+                        var message = response["message"];
+                        
+                        if(msgtype=="Error"){
+                            document.getElementById("loginMsgDisplay").style.background="#ff3333";
+                        }
+                        else if(msgtype=="Success"){
+                            document.getElementById("loginMsgDisplay").style.background="#99ff99";
+                            
+                        }
+                        document.getElementById("loginMsgType").innerHTML = msgtype+" : ";
+                        document.getElementById("loginMsg").innerHTML = message;
+                        document.getElementById("loginMsgDisplay").style.display="block";
+                        
+                        if(msgtype=="Error"){
+                            setTimeout(function(){
+                                document.getElementById("loginMsgDisplay").style.display="none";
+                                $("#userLoginModal").modal("hide");
+                            }, 2000); 
+                        }
+                        else if(msgType="Success"){
+                            setTimeout(function(){
+                                document.getElementById("loginMsgDisplay").style.display="none";
+                                $("#userLoginModal").modal("hide");
+                                location.reload();
+                            }, 2000);  
+                        }
+                        
+                }
+            };
+            xmlhttp.open("POST","./userLoginServlet", true);
+            xmlhttp.send(formdata);
+        }
+    </script>
+    
+    
     <style>
         
         .view-show:hover{
@@ -79,10 +287,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="ml-lg-5 navbar-nav mr-lg-auto">
-                            <li class="nav-item active  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
+                            <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="./index.jsp">Home</a>
                             </li>
-                            <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
+                            <li class="nav-item active  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="./about.jsp">about</a>
                             </li>
                             <%
@@ -172,7 +380,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="col-md-4 my-4 home-grid">
                     <span class="head-line"></span>
                     <span class="fa fa-info-circle" aria-hidden="true"></span>
-                    <h4 class="home-title my-3">why choose us</h4>
+                    <h4 class="home-title my-3">why choose code on cloud</h4>
                     <p style="text-align: justify">If you are a person who wants to code and share the code with multiple users at one 
                         time then you are at right place. We provide you the platform where you can code 
                         in any language of your choice at your ease and you can also share the code with 
@@ -182,7 +390,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="col-md-4 my-4 home-grid">
                     <span class="head-line"></span>
                     <span class="fa fa-connectdevelop" aria-hidden="true"></span>
-                    <h4 class="home-title my-3">what we do</h4>
+                    <h4 class="home-title my-3">what it does</h4>
                     <p style="text-align: justify"> 
                         We provide you the best coding experience which you want while coding. 
                         The code editor is quite simple. You just have to click on the compile code 
@@ -208,6 +416,169 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- //about -->
     
     <%@ include file='footer.html' %>
+    
+    <!-- login modal -->
+    <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleuserLoginModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-theme1">
+                    <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container" style="display:none" id="loginMsgDisplay">
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10" style="text-align: center">
+                                <h5 style="padding: 2% 0% 2% 0%"><span id="loginMsgType"></span>  <span id="loginMsg"></span></h5>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                    <form class="p-3">
+                        <div class="form-group">
+                            <label for="lusername" class="col-form-label">Username</label>
+                            <input type="text" class="form-control" placeholder="Username" name="lusername" id="lusername"
+                                required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="lpassword" class="col-form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="Password" name="lpassword" id="lpassword"
+                                required="">
+                        </div>
+                        <div class="right-w3l">
+                            <input type="button" class="form-control bg-theme" value="Login" onclick="userLoginLogic()">
+                        </div>
+                        <div class="row sub-w3l my-3">
+                            <div class="col forgot-w3l text-right">
+                                <a href="#" class="text-dark">Forgot Password?</a>
+                            </div>
+                        </div>
+                        <p class="text-center dont-do">Don't have an account?
+                            <a href="#" data-toggle="modal" data-target="#userSignupModal" class="text-dark">
+                                <strong>Register Now</strong></a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //login modal -->
+    
+    <!-- register modal -->
+    <div class="modal fade" id="userSignupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-theme1">
+                    <h5 class="modal-title" id="exampleModalLabel1">Register</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container" style="display:none" id="signupMsgDisplay">
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10" style="text-align: center">
+                                <h5 style="padding: 2% 0% 2% 0%"><span id="signupMsgType"></span>  <span id="signupMsg"></span></h5>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </div>
+                    <form class="p-3">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="username" class="col-form-label">Username</label>
+                                    <input type="text" class="form-control" placeholder="Username" name="username" id="username"
+                                        required="">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="name" class="col-form-label">Name</label>
+                                    <input type="text" class="form-control" placeholder="Name" name="name" id="name"
+                                        required="">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm">     
+                                <div class="form-group">
+                                        <label for="email" class="col-form-label">Email</label>
+                                        <input type="email" class="form-control" placeholder="Email" name="email" id="email"
+                                            required="">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="phoneno" class="col-form-label">Phone Number</label>
+                                    <input type="tel" maxlength="10" class="form-control" placeholder="Phone Number" name="phoneno" id="phoneno"
+                                        required="">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="gender" class="col-form-label">Gender</label>
+                                        <select id="gender" class="form-control" name="gender" id="gender">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="primarylanguage" class="col-form-label">Primary Language</label>
+                                        <select id="primarylanguage" class="form-control" name="primarylanguage" id="primarylanguage">
+                                            <option>C</option>
+                                            <option>C++</option>
+                                            <option>Java</option>
+                                            <option>Python</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="password1" class="col-form-label">Password</label>
+                                    <input type="password" class="form-control" placeholder="Password" name="password1" id="password1"
+                                        required="">
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="form-group">
+                                    <label for="password2" class="col-form-label">Confirm Password</label>
+                                    <input type="password" class="form-control" placeholder="Confirm Password" name="password2" id="password2"
+                                        required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo" class="col-form-label">Upload Profile Photo</label>
+                            <input type="file" class="form-control" name="photo" id="photo"
+                                required="">
+                        </div>
+                        <div class="right-w3l">
+                            <input type="button" class="form-control bg-theme" value="Register" onclick="userSignupLogic()">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //register modal -->
+    
+    
     
     <!-- js -->
     <script src="js/jquery-2.2.3.min.js"></script>
@@ -242,6 +613,30 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <script>
+        $('#userSignupModal').on('hide.bs.modal', function (e) {
+            document.getElementById("username").value="";
+            document.getElementById("name").value="";
+            document.getElementById("email").value="";
+            document.getElementById("password1").value="";
+            document.getElementById("password2").value="";
+            document.getElementById("phoneno").value="";
+            document.getElementById("gender").value="Male";
+            document.getElementById("primarylanguage").value="C";
+            document.getElementById("photo").value="";
+        }) 
+        
+        
+        $('#userLoginModal').on('hide.bs.modal',function(e){
+            document.getElementById("lusername").value="";
+            document.getElementById("lpassword").value="";
+            document.getElementById("loginMsgDisplay").style.display="none";
+        })
+        
+       
+        
+    </script>
 </body>
 
 </html>

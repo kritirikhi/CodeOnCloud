@@ -439,9 +439,12 @@
         })
         
         Array.from(document.getElementsByClassName("textarea-for-code")).forEach(el=>el.addEventListener("keydown",function(e){
+          
             if(e.which==9){
                 e.preventDefault();
-                e.target.value+="    ";
+                var cursorPos = e.target.selectionStart;
+                e.target.value=e.target.value.substr(0,cursorPos)+"    "+e.target.value.substr(cursorPos);
+                e.target.selectionEnd = cursorPos+4; 
             }
         }))
  

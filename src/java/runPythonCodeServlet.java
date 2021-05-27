@@ -37,7 +37,7 @@ public class runPythonCodeServlet extends HttpServlet {
 
             File f1 = new File(absolutepath);
             
-            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", filename + ".py"+ " " + commandargs);
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "python "+filename + ".py"+ " " + commandargs);
             pb.directory(f1);
             Process p = pb.start();
 
@@ -57,7 +57,7 @@ public class runPythonCodeServlet extends HttpServlet {
             out.println(ans1);
             
             while(true){
-                String s = br.readLine();
+                String s = br2.readLine();
                 if(s==null) break;
                 ans2+=s;
             }
