@@ -1,9 +1,3 @@
-<!--Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -381,6 +375,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                   <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
                                   <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
+                                  <a class="dropdown-item" href="./myprofile.jsp">My Profile</a>
+                                  <hr>
                                   <a class="dropdown-item" href="./userLogout">Logout</a>
                                 </div>
                             </div>

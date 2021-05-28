@@ -166,6 +166,9 @@
                                     </button>
                                     <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                       <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>
+                                      <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
+                                      <a class="dropdown-item" href="./myprofile.jsp">My Profile</a>
+                                      <hr>
                                       <a class="dropdown-item" href="./userLogout">Logout</a>
                                     </div>
                                 </div>
@@ -179,7 +182,7 @@
                     <li>
                         <div class="d-flex banner-w3pvt-bg1 common-bg">
                             <div class="d-flex mx-auto flex-column">
-                                <div class="bnr-w3pvt" style="margin-top:17%">
+                                <div class="bnr-w3pvt" style="margin-top:10px;">
                                     <h3>Change Password</h3>
                                 </div>
                                 <div class="row bnr-form-w3ls" style="margin-top:5%; padding:1%">

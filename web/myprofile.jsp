@@ -3,63 +3,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Code Cloud User Profile</title>
+    <title>Your Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8" />
     <script>
-        function addFriendLogic(){
-            var profileusername = document.getElementById("profileusername").value;
-            console.log(profileusername); 
-            
-            var formdata = new FormData();
-            formdata.append("requestto",profileusername);
-            
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                        var response = JSON.parse(this.responseText);
-                        if(response["type"]==="Error"){
-                            alert(response["message"]);
-                        }
-                        else if(response["type"]==="Already Friend"){
-                            alert(response["message"]);
-                        }
-                        else if(response["type"]==="Request Sent"){
-                            document.getElementById("addFriendBtn").value="Pending Request";
-                        }
-                }
-            };
-            xmlhttp.open("POST","./addFriendServlet", true);
-            xmlhttp.send(formdata);
-        }
-        
-        function deleteFriendRequest(){
-            var profileusername = document.getElementById("profileusername").value;
-            console.log(profileusername); 
-            
-            var formdata = new FormData();
-            formdata.append("requestto",profileusername);
-            
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                        var response = JSON.parse(this.responseText);
-                        if(response["type"]==="Success"){
-                            document.getElementById("deleteFriendRequest").value="Add Friend";
-                        }
-                        else{
-                            alert(response["message"]);
-                        }
-                }
-            };
-            xmlhttp.open("POST","./deleteFriendRequestFromProfileServlet", true);
-            xmlhttp.send(formdata);
-        }
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js"></script>
     
     <%@include file="headerfiles.html" %>
+    
+    <script>
+        function viewcode(filepath){
+                console.log(filepath);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = this.responseText;
+                        document.getElementById("codeDisplay").innerHTML=response;
+                        $("#viewCodeModal").modal("show");
+                    }
+                };
+                xmlhttp.open("GET","./all_users_data/"+filepath, true);
+                xmlhttp.send();
+            }
+            function shareCode(scid,username){
+                var scid = scid;
+                var sharedwith = username;
+                
+                var formdata = new FormData();
+                formdata.append("scid",scid);
+                formdata.append("sharedwith",sharedwith);
+                
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        console.log(response);
+                        $("#friendListModal").modal("hide");
+                    }
+                };
+                xmlhttp.open("POST","./shareCodeServlet", true);
+                xmlhttp.send(formdata);
+                
+            }
+            function getAllFriendsList(scid){
+                var scid = scid;
+                var formdata=new FormData();
+                formdata.append("scid",scid);
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        console.log(response);
+                        
+                        var arr = response["ans"];
+                        console.log(arr);
+                        var output='<section style="max-width: 800px; margin: 0 auto;">';
+                        for(var i=0;i<arr.length;i++){
+                            var username = arr[i].requestto;
+                            output+='<div class="card shadow my-4 mx-3">'
+                                output+='<div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">';
+                                output+='<div class="col-12 col-md-4 my-1">'
+                                    output+=username
+                                output+='</div>'
+                                
+                                output+='<div class="col-12 col-md-2">'
+                                output+='</div>'
+                                
+                                output+='<div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">'
+                                  output+='<button class="btn mx-3" style="background-color: #17a2b8; color: white;" onclick="shareCode('+scid+','+'\''+username+'\''+')">Share</button>'
+                                output+='</div>'
+                                output+='</div>'    
+                            output+='</div>';
+                        }
+                        output+='</section>';
+                        
+                        document.getElementById("displayFriends").innerHTML=output;
+                        $("#friendListModal").modal("show");
+                    }
+                };
+                xmlhttp.open("POST","./getAllFriendsListServlet", true);
+                xmlhttp.send(formdata);
+            }
+        
+    </script>
     
     <style>
         .content{
@@ -131,7 +159,7 @@
             
     <div class="content container" style="margin-top:8%;margin-bottom:10%">
         <div style="text-align: center">
-            <h1 class="errorMsg" >Login To View User's Profile</h1>
+            <h1 class="errorMsg" >Login To View Your Profile</h1>
             <a href="./index.jsp" style="color:white; font-weight:bold">
                 <div class="homeLink">HOME</div>
             </a>
@@ -197,11 +225,8 @@
         <!-- //header --> 
         
         <%
-            String profileusername = request.getParameter("username");
             try{
-                ResultSet rs = DBLoader.executeSQl("select name,photo,email,primarylanguage from users where username=\""+profileusername+"\"");
-                ResultSet friendset = DBLoader.executeSQl("select * from friends where requestfrom = '"+sessionusername.toString()+"' and requestto = '"+profileusername+"'");
-                
+                ResultSet rs = DBLoader.executeSQl("select name,photo,email,primarylanguage from users where username=\""+sessionusername.toString()+"\"");
                 if(rs.next()){
                     String name = rs.getString("name");
                     String photo = rs.getString("photo");
@@ -219,40 +244,11 @@
                               <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Name: </span> <%=name%></p>
                               <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Email: </span> <%=email%></p>
                               <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Primary Language: </span> <%=primarylanguage%></p>
-                              <input type="hidden" id="profileusername" value="<%=profileusername%>" />
+                              <input type="hidden" id="sessionusername" value="<%=sessionusername.toString()%>" />
                             </div>
-                            
-                            <%
-                                if(!(profileusername.equals(sessionusername.toString()))){
-                            %>
-                                    <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
-                                        <%
-                                            if(friendset.next()){
-                                                String status = friendset.getString("status");
-                                                if(status.equals("pending")){
-                                        %>
-                                             <!--<button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;">Accept</button>-->       
-                                             <input type="button" class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="deleteFriendRequest()" id="deleteFriendRequest" value="Pending Request" />  
-                                        <%
-                                                }
-                                                else{
-                                        %>
-                                                
-                                             <input type="button" class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" value="Friends" /> 
-                                        <%
-                                                }
-                                            }
-                                            else{
-                                        %>    
-                                        
-                                        <input type="button" onclick="addFriendLogic()" class="btn mx-3 btn-lg" id="addFriendBtn" style="background-color: #17a2b8; color: white;" value="Add Friend" />
-                                        <%
-                                            }
-                                        %>
-                                    </div>
-                            <%
-                                }
-                            %>
+                            <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
+                                  
+                            </div> 
                           </div>
                         </div>
                     </section>
@@ -308,11 +304,11 @@
     <div class="container mb-5">
         <div class="row">
             <div class="col-sm-6 mutual-friends-wrapper">
-                <h3 class="ml-3" style="color:#0d2865">Mutual Friends</h3>
+                <h3 class="ml-3" style="color:#0d2865">Your Friends</h3>
                 <section class="shadow" style="margin: 0 auto; margin-top:30px; margin-bottom: 50px; padding:2px">
                 <%
                     try{ 
-                        ResultSet mutualFriends = DBLoader.executeSQl("select * from friends where status='friends' and requestfrom='"+sessionusername.toString()+"' and requestto in (select requestto from friends where status='friends' and requestfrom='"+profileusername+"')  ");
+                        ResultSet mutualFriends = DBLoader.executeSQl("select * from friends where status='friends' and requestfrom='"+sessionusername.toString()+"'");
                         while(mutualFriends.next()){
                             String username = mutualFriends.getString("requestto");
                             ResultSet userphoto = DBLoader.executeSQl("select photo from users where username='"+username+"'");
@@ -352,23 +348,23 @@
              
                 try{
                     
-                    ResultSet cCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='c' and username='"+profileusername+"'");
+                    ResultSet cCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='c' and username='"+sessionusername.toString()+"'");
                         int c_count=0,cpp_count=0,java_count=0,python_count=0;
                         if(cCount.next()){
                             c_count = Integer.parseInt(cCount.getString(1));
                         }
 
-                        ResultSet cppCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='cpp' and username='"+profileusername+"'");
+                        ResultSet cppCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='cpp' and username='"+sessionusername.toString()+"'");
                         if(cppCount.next()){
                             cpp_count = Integer.parseInt(cppCount.getString(1));
                         }
 
-                        ResultSet javaCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='java' and username='"+profileusername+"'");
+                        ResultSet javaCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='java' and username='"+sessionusername.toString()+"'");
                         if(javaCount.next()){
                             java_count = Integer.parseInt(cCount.getString(1));
                         }
 
-                        ResultSet pythonCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='python' and username='"+profileusername+"'");
+                        ResultSet pythonCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='python' and username='"+sessionusername.toString()+"'");
                         if(pythonCount.next()){
                             python_count = Integer.parseInt(pythonCount.getString(1));
                         }
@@ -413,7 +409,124 @@
             
         </div>
     </div>
-    <%@include file="footer.html" %>    
+             
+             
+             
+    <div class="container">
+        <h3 class="ml-3" style="color:#0d2865">Recent Saved Codes</h3>
+        <section style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%">
+            <%  
+        try{
+            ResultSet rs = DBLoader.executeSQl("select * from savedcodes where username = '"+sessionusername.toString()+"' order by scid desc limit 5 ");
+                while(rs.next()){
+                    String lang=rs.getString("lang");
+                    String title=rs.getString("title");
+                    String filepath =rs.getString("filepath");
+                    filepath=filepath.replace("\\","\\\\");
+                    int scid = rs.getInt("scid");
+                
+    %>
+    
+                            <div class="card shadow my-4 mx-3">
+                                <div class="row align-items-center px-3 py-3 py-md-2 justify-content-center justify-content-md-start">
+                                    <div class="col-12 col-md-3 my-1 text-center">
+                                        <%
+                                            if (lang.equals("java")){
+                                        %>
+                                        
+                                        <img class="rounded-circle" src="./images/javaLogo.png" style="width: 130px; height: 130px;" alt="Card image cap">
+                                        
+                                        <%
+                                            }
+                                            else if(lang.equals("python")){
+                                        %>
+                                        
+                                        <img class="rounded-circle" src="./images/pythonLogo.png" style="width: 130px; height: 130px;" alt="Card image cap">
+                                        
+                                        <%
+                                            }
+                                            else if(lang.equals("c")){
+                                        %>
+                                        
+                                        <img class="rounded-circle" src="./images/cLogo.png" style="width: 130px; height: 130px;" alt="Card image cap">
+                                        
+                                        
+                                        <%
+                                            }
+                                            else if(lang.equals("cpp")){
+                                        %>
+                                        
+                                        <img class="rounded-circle" src="./images/cppLogo.png" style="width: 130px; height: 130px;" alt="Card image cap">
+                                        
+                                        <% 
+                                            }
+                                        %>
+                                      
+                                    </div>
+                                  <div class="col-12 col-md-3">
+                                    <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Language: </span> <%=lang%></p>
+                                    <p class="card-text text-center text-md-left font-md"><span class="font-weight-bold">Title: </span> <%=title%></p>
+                                  </div>
+                                  <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end d-flex mt-2">
+                                      <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="viewcode('<%=filepath%>')">View Code</button>
+                                    <button class="btn mx-3 btn-lg" style="background-color: #17a2b8; color: white;" onclick="getAllFriendsList(<%=scid%>)">Share Code</button>
+                                  </div>
+                                </div>
+                            </div>
+                                  
+    <% 
+                }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    
+    %>
+        </section>
+    </div>
+    <%@include file="footer.html" %>   
+    
+    <!-- View Code Modal -->
+    <div class="modal fade" id="viewCodeModal" tabindex="-1" role="dialog" aria-labelledby="viewCodeModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Code</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <p id="codeDisplay" style="white-space: pre-wrap"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- view code modal -->
+    
+    <!-- Modal to show friend list -->
+        <div class="modal fade" id="friendListModal" tabindex="-1" role="dialog" aria-labelledby="friendListModalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="friendListModalTitle">Share Code With Friends</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" id="displayFriends">
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    <!-- modal to show friend list -->
     </body>
 <%
     }
@@ -421,5 +534,13 @@
     
 
 <%@include file="footerfiles.html" %>
+
+<script>
+      
+        $('#friendListModal').on('hide.bs.modal',function(e){
+            document.getElementById("displayFriends").innerHTML="";
+        })
+      
+  </script>
 
 </html>

@@ -186,7 +186,8 @@
                                     <div class="dropdown-menu session-user-menu" aria-labelledby="usernameMenuButton">
                                       <a class="dropdown-item" href="./changePassword.jsp">Change Password</a>                                      
                                       <a class="dropdown-item" href="./compilecode.jsp">Compile Code</a>
-
+                                      <a class="dropdown-item" href="./myprofile.jsp">My Profile</a>
+                                      <hr>
                                       <a class="dropdown-item" href="./userLogout">Logout</a>
                                     </div>
                                 </div>
