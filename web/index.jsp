@@ -636,7 +636,7 @@
                         </div>
                         <div class="row sub-w3l my-3">
                             <div class="col forgot-w3l text-right">
-                                <a href="#" class="text-dark">Forgot Password?</a>
+                                <a href="./forgotPassword.jsp" class="text-dark">Forgot Password?</a>
                             </div>
                         </div>
                         <p class="text-center dont-do">Don't have an account?

@@ -112,6 +112,14 @@
         <servlet-name>subscribeServlet</servlet-name>
         <servlet-class>subscribeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>forgotPasswordServlet</servlet-name>
+        <servlet-class>forgotPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>forgotPasswordFinalServlet</servlet-name>
+        <servlet-class>forgotPasswordFinalServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userSignupServlet</servlet-name>
         <url-pattern>/userSignupServlet</url-pattern>
@@ -223,6 +231,14 @@
     <servlet-mapping>
         <servlet-name>subscribeServlet</servlet-name>
         <url-pattern>/subscribeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgotPasswordServlet</servlet-name>
+        <url-pattern>/forgotPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>forgotPasswordFinalServlet</servlet-name>
+        <url-pattern>/forgotPasswordFinalServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

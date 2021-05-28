@@ -1,14 +1,14 @@
-<!--Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-
+<%   
+    Object loginusername = request.getSession().getAttribute("username");
+    if(loginusername!=null){
+        response.sendRedirect("./index.jsp");
+    }
+%>
 <!DOCTYPE html>
 <html lang="zxx">
 
 <head>
-    <title>About</title>
+    <title>Forgot Password</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
@@ -237,8 +237,75 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             xmlhttp.open("POST","./userLoginServlet", true);
             xmlhttp.send(formdata);
         }
+        var responseOtp="";
+        var forgotusername="";
+        
+        function changepassword(){
+            var newpassword = document.getElementById("newpassword").value;            
+            var confirmnewpassword = document.getElementById("confirmnewpassword").value;
+            
+            var formdata = new FormData();
+            formdata.append("newpassword",newpassword);
+            formdata.append("confirmnewpassword",confirmnewpassword);
+            formdata.append("username",forgotusername);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        if(response["type"]==="Success"){
+                            document.getElementById("passwordStatus").innerHTML=response["message"];
+                            document.getElementById("passwordStatus").style.color="#66ff66";
+                            setTimeout(function(){
+                                location.href="./index.jsp";
+                            }, 2000); 
+                        }
+                        else{
+                           document.getElementById("passwordStatus").innerHTML=response["message"];
+                           document.getElementById("passwordStatus").style.color="#ff3333";
+                        }
+                }
+            };
+            xmlhttp.open("POST","./forgotPasswordFinalServlet", true);
+            xmlhttp.send(formdata);
+            
+        }
+        
+        function submitotp(){
+            var otp = document.getElementById("otp").value;
+            if(otp===responseOtp){
+                document.getElementById("otpSection").style.display="none";
+                document.getElementById("passwordSection").style.display="block";
+            }
+            else{
+                document.getElementById("otpStatus").innerHTML="Invalid OTP";
+                document.getElementById("otpStatus").style.color="#ff3333";
+            }
+        }
+        
+        function forgotpassword(){
+            var username = document.getElementById("username").value;
+            forgotusername=username;
+            var formdata = new FormData();
+            formdata.append("username",username);
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                        var response = JSON.parse(this.responseText);
+                        if(response["type"]==="Success"){
+                            responseOtp=response["otp"];
+                            document.getElementById("usernameSection").style.display="none";
+                            document.getElementById("otpSection").style.display="block";
+                        }
+                        else{
+                           document.getElementById("usernameStatus").innerHTML=response["message"]; 
+                        }
+                }
+            };
+            xmlhttp.open("POST","./forgotPasswordServlet", true);
+            xmlhttp.send(formdata);
+          
+        }
     </script>
-    
     
     <style>
         
@@ -269,7 +336,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         
     </style>
     
-    
 </head>
 
 <body>
@@ -290,7 +356,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="./index.jsp">Home</a>
                             </li>
-                            <li class="nav-item active  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
+                            <li class="nav-item  mr-lg-4 mt-lg-0 mt-sm-4 mt-3">
                                 <a href="./about.jsp">about</a>
                             </li>
                             <%
@@ -309,7 +375,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             <a class="view-show" href="./viewFriends.jsp">Friends</a>                                            
                                             <a class="view-show" href="./usersavedCodes.jsp">View Saved Codes</a>                              
                                             <a class="view-show" href="./viewSharedCodes.jsp">View Shared Codes</a>
-
                                         </div>
                                     </li>
                             <%
@@ -358,64 +423,142 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!-- //header -->
     <div class="inner-banner-w3ls">
     </div>
+        
     <!-- breadcrumbs -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb d-flex justify-content-center bg-theme">
             <li class="breadcrumb-item">
                 <a href="./index.jsp" class="text-white">Home</a>
             </li>
-            <li class="breadcrumb-item active text-white font-weight-bold" aria-current="page">About Us</li>
         </ol>
     </nav>
     <!-- //breadcrumbs -->
     
-    <!-- about -->
-    <section class="about-wthree py-3">
-        <div class="container  py-sm-5">
-            <div class="title-sec-w3layouts_pvt text-center">
-                <span class="title-wthree">A Flexible And Accessible Platform for Coders</span>
-                <h4 class="w3layouts_pvt-head">allowing you to code in multiple languages at one time easily</h4>
-            </div>
-            <div class="row head-row-home">
-                <div class="col-md-4 my-4 home-grid">
-                    <span class="head-line"></span>
-                    <span class="fa fa-info-circle" aria-hidden="true"></span>
-                    <h4 class="home-title my-3">why choose code on cloud</h4>
-                    <p style="text-align: justify">If you are a person who wants to code and share the code with multiple users at one 
-                        time then you are at right place. We provide you the platform where you can code 
-                        in any language of your choice at your ease and you can also share the code with 
-                        other users by sending them the friend request and sharing your code with them.
-                    </p>
-                </div>
-                <div class="col-md-4 my-4 home-grid">
-                    <span class="head-line"></span>
-                    <span class="fa fa-connectdevelop" aria-hidden="true"></span>
-                    <h4 class="home-title my-3">what it does</h4>
-                    <p style="text-align: justify"> 
-                        We provide you the best coding experience which you want while coding. 
-                        The code editor is quite simple. You just have to click on the compile code 
-                        option under your name at top right corner of the navbar and then 
-                        you just have to select the language of your own choice and 
-                        then you can compile , run and save your code.
-                    </p>
-                </div>
-                <div class="col-md-4 my-4 home-grid">
-                    <span class="fa fa-users" aria-hidden="true"></span>
-                    <h4 class="home-title my-3">explore yourself</h4>
-                    <p style="text-align: justify">
-                        Now You will be able to explore various coding languages. You can learn and 
-                        practice coding in multiple languages and also you can get ratings for your 
-                        code from other users. The rating involves likes, comments etc. This rating will 
-                        be given only by your friends at out platform. So you can improve yourself in any
-                        language of your choice.
-                    </p>
+    <!-- username -->
+    <section class="contact-w3pvt py-lg-5" id="usernameSection">
+        <div class="container py-md-5">
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <!-- contact form grid -->
+                    <div class="register-top1 py-lg-3">
+                        <div class="title-sec-w3layouts_pvt text-center">
+                            <h4 class="w3layouts_pvt-head">Forgot Password</h4>
+                        </div>
+                        <form class="register-wthree pt-md-5 pb-md-0 py-4">
+                            
+                            <h5 id="usernameStatus" style="color:#ff3333"></h5>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            Username
+                                        </label>
+                                        <input class="form-control" type="text" placeholder="Username" id="username" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-agile btn-block w-100 font-weight-bold text-uppercase bg-theme" onclick="forgotpassword()">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--  //register form grid ends here -->
+                    <div class="border-pos-wthree border-exp"></div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- //about -->
+    <!-- //username -->
     
-    <%@ include file='footer.html' %>
+    
+    <!-- otp -->
+    <section class="contact-w3pvt py-lg-5" id="otpSection" style="display: none">
+        <div class="container py-md-5">
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <!-- contact form grid -->
+                    <div class="register-top1 py-lg-3">
+                        <div class="title-sec-w3layouts_pvt text-center">
+                            <h4 class="w3layouts_pvt-head">Forgot Password</h4>
+                        </div>
+                        <form class="register-wthree pt-md-5 pb-md-0 py-4">
+                            
+                            <h5 id="otpStatus"> An OTP Has Been Sent To Your Registered Mobile Number</h5>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            OTP
+                                        </label>
+                                        <input class="form-control" type="text" placeholder="OTP" id="otp" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-agile btn-block w-100 font-weight-bold text-uppercase bg-theme" onclick="submitotp()">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--  //register form grid ends here -->
+                    <div class="border-pos-wthree border-exp"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- //otp -->
+    
+    <!-- password -->
+    <section class="contact-w3pvt py-lg-5" id="passwordSection" style="display:none">
+        <div class="container py-md-5">
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <!-- contact form grid -->
+                    <div class="register-top1 py-lg-3">
+                        <div class="title-sec-w3layouts_pvt text-center">
+                            <h4 class="w3layouts_pvt-head">Forgot Password</h4>
+                        </div>
+                        <form class="register-wthree pt-md-5 pb-md-0 py-4">
+                            <h5 id="passwordStatus"></h5>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>
+                                            New Password
+                                        </label>
+                                        <input class="form-control" type="password" placeholder="New Password" id="newpassword" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>
+                                            Confirm New Password
+                                        </label>
+                                        <input class="form-control" type="password" placeholder="Confirm New Password" id="confirmnewpassword" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-agile btn-block w-100 font-weight-bold text-uppercase bg-theme" onclick="changepassword()">Change Password</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--  //register form grid ends here -->
+                    <div class="border-pos-wthree border-exp"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- //password -->
+    
+    
+    <%@include file='footer.html' %>
     
     <!-- login modal -->
     <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleuserLoginModal"
@@ -578,11 +721,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     </div>
     <!-- //register modal -->
     
-    
-    
     <!-- js -->
     <script src="js/jquery-2.2.3.min.js"></script>
-    <!-- //js -->
+    
     <script src="js/move-top.js"></script>
     <script src="js/easing.js"></script>
     <script>
@@ -600,7 +741,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- smooth-scrolling-of-move-up -->
     <script>
         $(document).ready(function () {
-       
+           
             $().UItoTop({
                 easingType: 'easeOutQuart'
             });
@@ -610,7 +751,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="js/SmoothScroll.min.js"></script>
     <!-- //smooth-scrolling-of-move-up -->
     <!-- Bootstrap core JavaScript
-================================================== -->
+    ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>
     
