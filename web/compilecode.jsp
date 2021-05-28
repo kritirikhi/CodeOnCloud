@@ -364,7 +364,7 @@
     <!-- //header -->
     
     
-    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%">
+    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%; padding: 2px;">
         <form>
             <div style="display:flex; justify-content: space-between; align-items: center">
                 <div class="form-group" style="display: inline-block">
@@ -418,7 +418,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="commandargs" class="font-weight-bold">Enter space separated Command Line Arguments</label>
-                        <textarea class="form-control textarea-for-code" id="commandargs" rows="4"></textarea>
+                        <textarea class="form-control textarea-for-code" id="commandargs" rows="4" spellcheck="false"></textarea>
                     </div>
                 </div>
                 <div class="col-sm-6">

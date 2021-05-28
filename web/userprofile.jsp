@@ -9,7 +9,6 @@
     <script>
         function addFriendLogic(){
             var profileusername = document.getElementById("profileusername").value;
-            console.log(profileusername); 
             
             var formdata = new FormData();
             formdata.append("requestto",profileusername);
@@ -25,7 +24,8 @@
                             alert(response["message"]);
                         }
                         else if(response["type"]==="Request Sent"){
-                            document.getElementById("addFriendBtn").value="Pending Request";
+                            window.location.reload();
+//                            document.getElementById("addFriendBtn").value="Pending Request";
                         }
                 }
             };
@@ -35,7 +35,6 @@
         
         function deleteFriendRequest(){
             var profileusername = document.getElementById("profileusername").value;
-            console.log(profileusername); 
             
             var formdata = new FormData();
             formdata.append("requestto",profileusername);
@@ -45,7 +44,8 @@
                 if (this.readyState == 4 && this.status == 200) {
                         var response = JSON.parse(this.responseText);
                         if(response["type"]==="Success"){
-                            document.getElementById("deleteFriendRequest").value="Add Friend";
+//                            document.getElementById("deleteFriendRequest").value="Add Friend";
+                              window.location.reload();
                         }
                         else{
                             alert(response["message"]);

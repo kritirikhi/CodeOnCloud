@@ -24,7 +24,7 @@
                         $("#viewCodeModal").modal("show");
                     }
                 };
-                xmlhttp.open("GET","./all_users_data/"+filepath, true);
+                xmlhttp.open("GET","./"+filepath, true);
                 xmlhttp.send();
             }
             function shareCode(scid,username){

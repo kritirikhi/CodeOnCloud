@@ -26,7 +26,7 @@
                         $("#viewCodeModal").modal("show");
                     }
                 };
-                xmlhttp.open("GET","./all_users_data/"+filepath, true);
+                xmlhttp.open("GET","./"+filepath, true);
                 xmlhttp.send();
             }
             function shareCode(scid,username){
@@ -224,7 +224,7 @@
         
     <%  
         try{
-            ResultSet rs = DBLoader.executeSQl("select * from savedcodes where username = '"+sessionusername.toString()+"'");
+            ResultSet rs = DBLoader.executeSQl("select * from savedcodes where username = '"+sessionusername.toString()+"' order by scid desc");
                 while(rs.next()){
                     String lang=rs.getString("lang");
                     String title=rs.getString("title");
