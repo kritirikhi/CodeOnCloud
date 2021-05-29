@@ -17,6 +17,44 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8" />
       <script>
+            let editor;
+
+            window.onload = function() {
+                console.log("in editor onload function")
+                editor = ace.edit("codetext");
+                editor.setTheme("ace/theme/monokai");
+                editor.session.setMode("ace/mode/java");
+            }
+            
+            function changeTheme(){
+                var theme = document.getElementById("theme").value;
+                console.log(theme);
+                if(theme==="Dark"){
+                    editor.setTheme("ace/theme/monokai");
+                }
+                else if(theme==="Light"){
+                    editor.setTheme("ace/theme/clouds");
+                }
+            }
+
+            function changeLanguage() {
+                console.log("change lang func");
+                var language = document.getElementById("language").value;
+                if(language == 'C' || language == 'C++'){
+                    console.log("c")
+                    editor.session.setMode("ace/mode/c_cpp");
+                }
+                else if(language == 'Python'){
+                    console.log("python")
+                    editor.session.setMode("ace/mode/python");
+                }    
+                else if(language == 'Java'){
+                    console.log("java")
+                    editor.session.setMode("ace/mode/java");
+                }
+
+            }
+            
             function saveCode(){
                 var codeTitle = document.getElementById("saveCodeTitle").value;                
                 var language = document.getElementById("language").value;
@@ -48,6 +86,7 @@
                             document.getElementById("saveCodeMessageDisplay").innerHTML=response["message"];
                             
                             setTimeout(function(){
+                                console.log("y sabe")
                                 document.getElementById("saveCodeMessage").style.display="none";
                                 $("#saveCodeModal").modal("hide");
                             }, 2000); 
@@ -70,7 +109,7 @@
             }
             function runCode(){
                 var language = document.getElementById("language").value;
-                var codetext = document.getElementById("codetext").value;
+                var codetext = editor.getSession().getValue();
                 var commandargs = document.getElementById("commandargs").value;
                 
                 if(language==="Java"){
@@ -126,7 +165,7 @@
             }
           
             function compile_code_step1(){
-                var codetext = document.getElementById("codetext").value;
+                var codetext = editor.getSession().getValue();
                 var language = document.getElementById("language").value;
                 language = language.toLowerCase();
                 
@@ -364,31 +403,42 @@
     <!-- //header -->
     
     
-    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%; padding: 2px;">
+    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%; padding: 5px;">
         <form>
             <div style="display:flex; justify-content: space-between; align-items: center">
-                <div class="form-group" style="display: inline-block">
-                  <label for="language" class="font-weight-bold">Choose Language</label>
-                  <select class="form-control" id="language">
-                    <option>Java</option>
-                    <option>Python</option>
-                    <option>C</option>
-                    <option>C++</option>
-                  </select>
+                <div>
+                    <div class="form-group" style="display: inline-block">
+                      <label for="language" class="font-weight-bold">Choose Language</label>
+                      <select class="form-control" id="language" onchange="changeLanguage()">
+                        <option>Java</option>
+                        <option>Python</option>
+                        <option>C</option>
+                        <option>C++</option>
+                      </select>
+                    </div>
+                    <div class="form-group ml-3" style="display:inline-block">
+                      <label for="theme" class="font-weight-bold">Change Theme</label>
+                      <select class="form-control" id="theme" onchange="changeTheme()">
+                        <option>Dark</option>
+                        <option>Light</option>
+                      </select>
+                    </div>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-primary" onclick="compile_code_step1()">Compile</button>
-                    <button type="button" class="btn btn-primary ml-3" onclick="runCode()" id="runBtn" disabled>Run</button>
+                    <button type="button" class="btn btn-info" onclick="compile_code_step1()">Compile</button>
+                    <button type="button" class="btn btn-danger ml-3" onclick="runCode()" id="runBtn" disabled>Run</button>
                     <!-- Button trigger modal -->
                     <button type="button" id="saveBtn" style="display:none; background-color:#0d2865; border: 1px solid #0d2865" class="btn btn-success ml-3" data-toggle="modal" data-target="#saveCodeModal">
                       Save
                     </button>
                 </div>
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
               <label for="codetext" class="font-weight-bold">Write Code Here</label>
               <textarea class="form-control textarea-for-code" id="codetext" rows="12" spellcheck="false"></textarea>
-            </div>
+            </div>-->
+            
+            <div class="editor" id="codetext" style="height:360px;"></div>
             
 
             <!-- Modal for input title for save code-->
@@ -434,6 +484,11 @@
     
   <%@include file="footer.html" %>  
   </body>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="js/lib/ace.js"></script>
+  <script src="js/lib/theme-monokai.js"></script>
+  
   <%@include file="footerfiles.html" %>
   <script>
         $('#saveCodeModal').on('hide.bs.modal',function(e){
@@ -441,15 +496,15 @@
             document.getElementById("saveCodeMessage").style.display="none";
         })
         
-        Array.from(document.getElementsByClassName("textarea-for-code")).forEach(el=>el.addEventListener("keydown",function(e){
-          
-            if(e.which==9){
-                e.preventDefault();
-                var cursorPos = e.target.selectionStart;
-                e.target.value=e.target.value.substr(0,cursorPos)+"    "+e.target.value.substr(cursorPos);
-                e.target.selectionEnd = cursorPos+4; 
-            }
-        }))
+//        Array.from(document.getElementsByClassName("textarea-for-code")).forEach(el=>el.addEventListener("keydown",function(e){
+//          
+//            if(e.which==9){
+//                e.preventDefault();
+//                var cursorPos = e.target.selectionStart;
+//                e.target.value=e.target.value.substr(0,cursorPos)+"    "+e.target.value.substr(cursorPos);
+//                e.target.selectionEnd = cursorPos+4; 
+//            }
+//        }))
  
   </script>
   
