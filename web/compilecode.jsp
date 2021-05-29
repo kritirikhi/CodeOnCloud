@@ -30,9 +30,17 @@
                 var theme = document.getElementById("theme").value;
                 console.log(theme);
                 if(theme==="Dark"){
+                    document.getElementById("commandargs").style.background="#272822";
+                    document.getElementById("commandargs").style.color="white";
+                    document.getElementById("codeoutput").style.background="#272822";
+                    document.getElementById("codeoutput").style.color="white";
                     editor.setTheme("ace/theme/monokai");
                 }
                 else if(theme==="Light"){
+                    document.getElementById("commandargs").style.background="white";
+                    document.getElementById("commandargs").style.color="black";
+                    document.getElementById("codeoutput").style.background="white";
+                    document.getElementById("codeoutput").style.color="black";
                     editor.setTheme("ace/theme/clouds");
                 }
             }
@@ -121,6 +129,7 @@
                     var xmlhttp = new XMLHttpRequest();
                     xmlhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
+                            console.log(this.responseText);
                             document.getElementById("codeoutput").innerHTML = this.responseText;
                         }
                     };
@@ -403,10 +412,10 @@
     <!-- //header -->
     
     
-    <section class="mt-3" style="max-width: 1200px; margin: 0 auto; margin-bottom: 20%; padding: 5px;">
+    <section class="mt-2" style="max-width: 1350px; margin: 0 auto; margin-bottom: 20%; padding: 5px;">
         <form>
-            <div style="display:flex; justify-content: space-between; align-items: center">
-                <div>
+            <div class="row" style="align-items: center">
+                <div class="col-12 col-md-6">
                     <div class="form-group" style="display: inline-block">
                       <label for="language" class="font-weight-bold">Choose Language</label>
                       <select class="form-control" id="language" onchange="changeLanguage()">
@@ -424,13 +433,14 @@
                       </select>
                     </div>
                 </div>
-                <div>
-                    <button type="button" class="btn btn-info" onclick="compile_code_step1()">Compile</button>
-                    <button type="button" class="btn btn-danger ml-3" onclick="runCode()" id="runBtn" disabled>Run</button>
-                    <!-- Button trigger modal -->
-                    <button type="button" id="saveBtn" style="display:none; background-color:#0d2865; border: 1px solid #0d2865" class="btn btn-success ml-3" data-toggle="modal" data-target="#saveCodeModal">
-                      Save
-                    </button>
+                <div class="col-12 col-md-6">
+                    <div class="d-flex flex-md-row-reverse">
+                        <button type="button" id="saveBtn" style="display:none; background-color:#0d2865; border: 1px solid #0d2865" class="btn btn-success mx-3" data-toggle="modal" data-target="#saveCodeModal">
+                          Save
+                        </button>
+                        <button type="button" class="btn btn-danger mx-3" onclick="runCode()" id="runBtn" disabled>Run</button>
+                        <button type="button" class="btn btn-info mx-3" onclick="compile_code_step1()">Compile</button>
+                    </div>
                 </div>
             </div>
 <!--            <div class="form-group">
@@ -438,49 +448,47 @@
               <textarea class="form-control textarea-for-code" id="codetext" rows="12" spellcheck="false"></textarea>
             </div>-->
             
-            <div class="editor" id="codetext" style="height:360px;"></div>
-            
-
-            <!-- Modal for input title for save code-->
-            <div class="modal fade" id="saveCodeModal" tabindex="-1" role="dialog" aria-labelledby="saveCodeModal" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="saveCodeLabel">Save Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="container" id="saveCodeMessage" style="text-align:center;padding-top:5px; padding-bottom:5px; display:none"><b id="saveCodeMessageDisplay"></b></div>
-                      <label for="saveCodeTitle" id="saveCodeTitleLabel">Enter Title For The Code</label>
-                      <input type="text" id="saveCodeTitle" class="form-control"/>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveCode()">Save changes</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- modal close -->
+            <div class="editor mt-2" id="codetext" style="height:360px;"></div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="commandargs" class="font-weight-bold">Enter space separated Command Line Arguments</label>
-                        <textarea class="form-control textarea-for-code" id="commandargs" rows="4" spellcheck="false"></textarea>
+                        <textarea class="form-control textarea-for-code" id="commandargs" rows="4" spellcheck="false" style="background-color:#272822; color:white"></textarea>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="codeoutput" class="font-weight-bold">Output</label>
-                        <textarea id="codeoutput" class="form-control textarea-for-code" rows="4" readonly></textarea>
+                        <textarea id="codeoutput" class="form-control textarea-for-code" rows="4" readonly style="background-color:#272822; color:white"></textarea>
                     </div>
                 </div>
             </div>
         </form>
-    
     </section>
+    
+    <!-- Modal for input title for save code-->
+    <div class="modal fade" id="saveCodeModal" tabindex="-1" role="dialog" aria-labelledby="saveCodeModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="saveCodeLabel">Save Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                      <div class="container" id="saveCodeMessage" style="text-align:center;padding-top:5px; padding-bottom:5px; display:none"><b id="saveCodeMessageDisplay"></b></div>
+                      <label for="saveCodeTitle" id="saveCodeTitleLabel">Enter Title For The Code</label>
+                      <input type="text" id="saveCodeTitle" class="form-control"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCode()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal close -->
     
   <%@include file="footer.html" %>  
   </body>

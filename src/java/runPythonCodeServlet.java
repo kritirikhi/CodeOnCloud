@@ -52,9 +52,6 @@ public class runPythonCodeServlet extends HttpServlet {
             while(true){
                 String s = br.readLine();
                 if(s==null) break;
-                if(s.equals('\n')){
-                    ans1+="<br>";
-                }
                 ans1+=s;
             }
             out.println(ans1);
