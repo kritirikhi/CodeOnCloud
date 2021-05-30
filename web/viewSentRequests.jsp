@@ -228,7 +228,7 @@
     %>
     </section>
 
-  <%@include file="footer.html" %>  
+  <%@include file="footer.jsp" %>  
   </body>
   <%@include file="footerfiles.html" %>
 </html>

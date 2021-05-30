@@ -28,8 +28,8 @@ public class viewcommentsServlet extends HttpServlet {
         }
         else{
             try{
-                int shid = Integer.parseInt(request.getParameter("shid"));
-                String commentsjson = new RDBMS_TO_JSON().generateJSON("select * from comments where shid='"+shid+"'");
+                int scid = Integer.parseInt(request.getParameter("scid"));
+                String commentsjson = new RDBMS_TO_JSON().generateJSON("select * from comments where scid='"+scid+"'");
                 out.println(commentsjson);
             }
             catch(Exception e){

@@ -28,15 +28,15 @@ public class likeCodeServlet extends HttpServlet {
         }
         else{
             try{
-                int shid = Integer.parseInt(request.getParameter("shid"));
-                ResultSet rs = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and shid='"+shid+"'");
+                int scid = Integer.parseInt(request.getParameter("scid"));
+                ResultSet rs = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and scid='"+scid+"'");
                 if(rs.next()){
                     rs.deleteRow();
                 }
                 else{
                     rs.moveToInsertRow();
                     rs.updateString("likedby",sessionusername.toString());
-                    rs.updateInt("shid", shid);
+                    rs.updateInt("scid", scid);
                     rs.insertRow();
                 }
                 String type="Success";

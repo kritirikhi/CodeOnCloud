@@ -20,9 +20,9 @@
       <meta charset="utf-8" />
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
       <script>
-            function viewcomments(shid){
+            function viewcomments(scid){
                 var formdata = new FormData();
-                formdata.append("shid",shid);
+                formdata.append("scid",scid);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -67,9 +67,9 @@
                 xmlhttp.send(formdata); 
             }
           
-            function addcomment(shid){
-                var shid = shid
-                var commenttext = document.getElementById("commenttext"+shid).value
+            function addcomment(scid){
+                var scid = scid
+                var commenttext = document.getElementById("commenttext"+scid).value
                 if(commenttext===""){
                     alert("Please Write The Comment");
                     return;
@@ -79,14 +79,14 @@
                     return;
                 }
                 var formdata = new FormData()
-                formdata.append("shid",shid)
+                formdata.append("scid",scid)
                 formdata.append("commenttext",commenttext)
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var response=JSON.parse(this.responseText);
                         if(response["type"]==="Success"){
-                            document.getElementById("commenttext"+shid).value="";
+                            document.getElementById("commenttext"+scid).value="";
                             $("#addcommentSuccess").modal("show");
                         }
                         else{
@@ -99,10 +99,10 @@
                 xmlhttp.send(formdata);
             }
           
-          function likeCode(shid){
-                console.log(shid);
+          function likeCode(scid){
+                console.log(scid);
                 var formdata = new FormData();
-                formdata.append("shid",shid);
+                formdata.append("scid",scid);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -236,12 +236,15 @@
                     String ownedby = rs.getString("ownedby");
                     int scid = rs.getInt("scid");
                     int shid = rs.getInt("shid");
+                    System.out.println("shared code "+scid);
                     try{
                         ResultSet rs2 = DBLoader.executeSQl("select * from savedcodes where scid='"+scid+"'");
                         if(rs2.next()){
                             String filepath = rs2.getString("filepath");
+                            System.out.println(filepath);
                             String absolutepath = request.getServletContext().getRealPath("/all_users_data");
                             filepath = absolutepath+"\\"+filepath;
+                            System.out.println("filepath "+filepath);
                             String title = rs2.getString("title");
                             title=title.toUpperCase();
                             String codetext="";
@@ -252,6 +255,8 @@
                                 line = fr.read();
                             }
                             fr.close(); 
+                            codetext = codetext.replace("<","&lt;");
+                            codetext = codetext.replace(">","&gt;");
     %>
                                   
                             <div class="container mb-3 card shadow">
@@ -274,8 +279,11 @@
                                   <form class="form-group">
                                             <%
                                                try{
-                                                ResultSet likeset = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and shid='"+shid+"'");
-                                                ResultSet likeset2 = DBLoader.executeSQl("select count(*) from liketable where shid='"+shid+"'");
+//                                                ResultSet likeset = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and shid='"+shid+"'");
+                                                ResultSet likeset = DBLoader.executeSQl("select * from liketable where likedby='"+sessionusername.toString()+"' and scid='"+scid+"'");
+//                                                ResultSet likeset2 = DBLoader.executeSQl("select count(*) from liketable where shid='"+shid+"'");                                                
+                                                ResultSet likeset2 = DBLoader.executeSQl("select count(*) from liketable where scid='"+scid+"'");
+
                                                 int totalLikes=0;
                                                 if(likeset2.next()){
                                                     totalLikes=likeset2.getInt(1);
@@ -289,7 +297,8 @@
                                                 }
                                             %>
                                                    <div class="container">
-                                                    <i class="<%=likeClassName%> fa-heart like-color" id="likedBtn" onclick="likeCode(<%=shid%>)"></i>
+                                                    <!--<i class="<%=likeClassName%> fa-heart like-color" id="likedBtn" onclick="likeCode(<%=shid%>)"></i>-->
+                                                    <i class="<%=likeClassName%> fa-heart like-color" id="likedBtn" onclick="likeCode(<%=scid%>)"></i>
                                             
                                                     <button type="button" id="totalLikes" class="btn" style="background:white; color:black" disabled><%=totalLikes%> <span>Likes</span></button>
                                                     </div>
@@ -302,9 +311,9 @@
                                     </form>
                                     <div class="container" style="position:relative">
                                         <label for="commenttext" >Post Your Comment Here</label>
-                                        <input type="text" class="form-control" id="commenttext<%=shid%>" aria-describedby="commenttext" placeholder="Your Comment">
-                                        <button type="button" class="btn btn-dark mt-3 mb-5" onclick="addcomment(<%=shid%>)">Comment</button>
-                                        <button type="button" class="btn btn-dark mt-3 mb-5" style="position:absolute; right:15px" onclick="viewcomments(<%=shid%>)">View Comments</button>
+                                        <input type="text" class="form-control" id="commenttext<%=scid%>" aria-describedby="commenttext" placeholder="Your Comment">
+                                        <button type="button" class="btn btn-dark mt-3 mb-5" onclick="addcomment(<%=scid%>)">Comment</button>
+                                        <button type="button" class="btn btn-dark mt-3 mb-5" style="position:absolute; right:15px" onclick="viewcomments(<%=scid%>)">View Comments</button>
                                     </div>
                                   
                                 </div>
@@ -384,7 +393,7 @@
         </div>
       </div>
     </div>
-  <%@include file="footer.html" %>  
+  <%@include file="footer.jsp" %>  
   </body>
   <%@include file="footerfiles.html" %>
 </html>

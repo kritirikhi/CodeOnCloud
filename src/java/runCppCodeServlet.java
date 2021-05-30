@@ -37,7 +37,6 @@ public class runCppCodeServlet extends HttpServlet {
 
             File f1 = new File(absolutepath);
             
-//            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "java  -cp \"" + f1.getPath() + "\" " + filename + " " + commandargs);
             ProcessBuilder pb = new ProcessBuilder("cmd", "/c", filename+".exe"+" "+commandargs);
             pb.directory(f1);
             Process p = pb.start();
@@ -54,6 +53,7 @@ public class runCppCodeServlet extends HttpServlet {
                 String s = br.readLine();
                 if(s==null) break;
                 ans1+=s;
+                ans1+="\n";
             }
             out.println(ans1);
             
@@ -61,6 +61,7 @@ public class runCppCodeServlet extends HttpServlet {
                 String s = br.readLine();
                 if(s==null) break;
                 ans2+=s;
+                ans2+="\n";
             }
             out.println(ans2);
         }

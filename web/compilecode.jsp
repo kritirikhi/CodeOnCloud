@@ -41,10 +41,11 @@
                     document.getElementById("commandargs").style.color="black";
                     document.getElementById("codeoutput").style.background="white";
                     document.getElementById("codeoutput").style.color="black";
-                    editor.setTheme("ace/theme/clouds");
+                    editor.setTheme("ace/theme/clouds");               
+
                 }
             }
-
+            
             function changeLanguage() {
                 console.log("change lang func");
                 var language = document.getElementById("language").value;
@@ -448,7 +449,7 @@
               <textarea class="form-control textarea-for-code" id="codetext" rows="12" spellcheck="false"></textarea>
             </div>-->
             
-            <div class="editor mt-2" id="codetext" style="height:360px;"></div>
+            <div class="editor mt-2" id="codetext" style="height:300px;"></div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -483,14 +484,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="saveCode()">Save changes</button>
+                    <button type="button" class="btn btn-info" onclick="saveCode()">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- modal close -->
     
-  <%@include file="footer.html" %>  
+  <%@include file="footer.jsp" %>  
   </body>
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

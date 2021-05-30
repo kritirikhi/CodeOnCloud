@@ -530,7 +530,7 @@
     </div>
     <!-- // map -->
     
-    <%@include file='footer.html' %>
+    <%@include file='footer.jsp' %>
     
     <!-- login modal -->
     <div class="modal fade" id="userLoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleuserLoginModal"

@@ -22,11 +22,13 @@
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var response = this.responseText;
+                        response = response.replace("<","&lt;");
+                        response = response.replace(">","&gt;");
                         document.getElementById("codeDisplay").innerHTML=response;
                         $("#viewCodeModal").modal("show");
                     }
                 };
-                xmlhttp.open("GET","./"+filepath, true);
+                xmlhttp.open("GET","./all_users_data/"+filepath, true);
                 xmlhttp.send();
             }
             function shareCode(scid,username){
@@ -313,7 +315,7 @@
       </div>
     </div>
 
-  <%@include file="footer.html" %>  
+  <%@include file="footer.jsp" %>  
   </body>
   <%@include file="footerfiles.html" %>
   <script>

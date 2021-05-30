@@ -31,14 +31,14 @@ public class addCommentServlet extends HttpServlet {
         else{
             try{
                 String commenttext = request.getParameter("commenttext");
-                int shid = Integer.parseInt(request.getParameter("shid"));
+                int scid = Integer.parseInt(request.getParameter("scid"));
                 ResultSet rs  = DBLoader.executeSQl("Select * from comments");
                 while(rs.next()){
                     
                 }
                 rs.moveToInsertRow();
                 rs.updateString("commenttext", commenttext);
-                rs.updateInt("shid",shid);
+                rs.updateInt("scid",scid);
                 rs.updateString("commentedby",sessionusername.toString());
                 rs.insertRow();
                 

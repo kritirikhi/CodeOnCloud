@@ -34,6 +34,7 @@ function subscribe(){
 </script>
 
 
+
 <!-- Footer -->
     <footer id="footer" class="py-sm-5 py-4 bg-theme">
         <div class="container">
@@ -59,6 +60,10 @@ function subscribe(){
                             <br>Computer Engineering And Technology</p>
                     </div>
                 </div>
+                <%
+                    Object footersessionusername = session.getAttribute("username");
+                    if (footersessionusername==null){
+                %>  
                 <div class="col-lg-3 col-sm-6 mt-sm-0 mt-5">
                     <h5>Quick links</h5>
                     <ul class="list-unstyled quick-links">
@@ -70,10 +75,6 @@ function subscribe(){
                             <a href="./about.jsp">
                                 <span class="fa fa-play"></span>About</a>
                         </li>
-<!--                        <li>
-                            <a href="./compilecode.jsp">
-                                <span class="fa fa-play"></span>Compile Code</a>
-                        </li>-->
                         <li>
                             <a href="./index.jsp">
                                 <span class="fa fa-play"></span>Search Users</a>
@@ -97,8 +98,8 @@ function subscribe(){
                                 <span class="fa fa-play"></span>Sign Up</a>
                         </li>
                         <li>
-                            <a href="./userLogout">
-                                <span class="fa fa-play"></span>Logout</a>
+                            <a href="./forgotPassword.jsp">
+                                <span class="fa fa-play"></span>Forgot Password</a>
                         </li>
                         <li>
                             <a href="./compilecode.jsp">
@@ -106,6 +107,59 @@ function subscribe(){
                         </li>
                     </ul>
                 </div>
+                <%
+                    }
+                    else{
+                %>
+                
+                <div class="col-lg-3 col-sm-6 mt-sm-0 mt-5">
+                    <h5>Quick links</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li>
+                            <a href="./index.jsp">
+                                <span class="fa fa-play"></span>Home</a>
+                        </li>
+                        <li>
+                            <a href="./about.jsp">
+                                <span class="fa fa-play"></span>About</a>
+                        </li>
+                        <li>
+                            <a href="./index.jsp">
+                                <span class="fa fa-play"></span>Search Users</a>
+                        </li>
+                        <li>
+                            <a href="./contact.jsp">
+                                <span class="fa fa-play"></span>Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5">
+                    <h5>Quick links</h5>
+                    <ul class="list-unstyled quick-links">
+                        <li>
+                            <a href="./userLogout">
+                                <span class="fa fa-play"></span>Logout</a>
+                        </li>
+                        <li>
+                            <a href="./viewFriends.jsp">
+                                <span class="fa fa-play"></span>View Friends</a>
+                        </li>
+                        <li>
+                            <a href="./myprofile.jsp">
+                                <span class="fa fa-play"></span>My Profile</a>
+                        </li>
+                        <li>
+                            <a href="./compilecode.jsp">
+                                <span class="fa fa-play"></span>Compile Code</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <%
+
+                    }
+                %>
                 <div class="col-lg-3 col-sm-6 mt-lg-0 mt-5">
                     <h5>Subscribe To Get Notifications</h5>
                     <form>
@@ -123,7 +177,7 @@ function subscribe(){
     <!-- /Footer -->
     
     <div class="cpy-right text-center py-4">
-        <p class="text-dark">Â© 2021 CodeOnCloud. Coding Platform | Made by
+        <p class="text-dark">© 2021 CodeOnCloud. Coding Platform | Made by
             <a class="text-theme"> Kriti Rikhi (2017CSA1110).</a>
         </p>
     </div>

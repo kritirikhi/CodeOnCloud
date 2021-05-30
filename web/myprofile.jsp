@@ -24,7 +24,7 @@
                         $("#viewCodeModal").modal("show");
                     }
                 };
-                xmlhttp.open("GET","./"+filepath, true);
+                xmlhttp.open("GET","./all_users_data/"+filepath, true);
                 xmlhttp.send();
             }
             function shareCode(scid,username){
@@ -361,7 +361,7 @@
 
                         ResultSet javaCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='java' and username='"+sessionusername.toString()+"'");
                         if(javaCount.next()){
-                            java_count = Integer.parseInt(cCount.getString(1));
+                            java_count = Integer.parseInt(javaCount.getString(1));
                         }
 
                         ResultSet pythonCount = DBLoader.executeSQl("select count(*) from savedcodes where lang='python' and username='"+sessionusername.toString()+"'");
@@ -484,7 +484,7 @@
     %>
         </section>
     </div>
-    <%@include file="footer.html" %>   
+    <%@include file="footer.jsp" %>   
     
     <!-- View Code Modal -->
     <div class="modal fade" id="viewCodeModal" tabindex="-1" role="dialog" aria-labelledby="viewCodeModal" aria-hidden="true">

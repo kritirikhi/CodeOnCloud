@@ -54,6 +54,7 @@ public class runJavaCodeServlet extends HttpServlet {
                 String s = br.readLine();
                 if(s==null) break;
                 ans1+=s;
+                ans1+="\n";
             }
             out.println(ans1);
             
@@ -61,6 +62,7 @@ public class runJavaCodeServlet extends HttpServlet {
                 String s = br.readLine();
                 if(s==null) break;
                 ans2+=s;
+                ans2+="\n";
             }
             out.println(ans2);
         }
